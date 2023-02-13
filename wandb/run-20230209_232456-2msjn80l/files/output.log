@@ -1,0 +1,138 @@
+training new model, the num of training epochs is 5
+the shape of batch_data: (14, 384, 512, 10)
+the shape of batch_data after transformation (10, 5, 384, 512, 10)
+  0%|                                                                                                                                                      | 0/5 [00:02<?, ?it/s]
+Traceback (most recent call last):
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 388, in <module>
+    trainer.train_model(Test_data, num_epochs=num_epochs)
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 326, in train_model
+    loss, loss_ml, loss_mc, self.state, self.main_rng = self.train_epoch(self.state, self.main_rng)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/api.py", line 620, in cache_miss
+    execute = dispatch._xla_call_impl_lazy(fun_, *tracers, **params)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/dispatch.py", line 236, in _xla_call_impl_lazy
+    return xla_callable(fun, device, backend, name, donated_invars, keep_unused,
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/linear_util.py", line 300, in memoized_fun
+    ans = call(fun, *args)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/dispatch.py", line 359, in _xla_callable_uncached
+    return lower_xla_callable(fun, device, backend, name, donated_invars, False,
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/dispatch.py", line 445, in lower_xla_callable
+    jaxpr, out_type, consts = pe.trace_to_jaxpr_final2(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 2081, in trace_to_jaxpr_final2
+    jaxpr, out_type, consts = trace_to_subjaxpr_dynamic2(fun, main, debug_info)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 2031, in trace_to_subjaxpr_dynamic2
+    ans = fun.call_wrapped(*in_tracers_)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/linear_util.py", line 167, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 246, in train_epoch
+    loss, loss_ml, loss_mc, state, main_rng = lax.fori_loop(0, self.num_steps_per_epoch, train_step, (loss, loss_ml, loss_mc, state, main_rng))
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 1691, in fori_loop
+    (_, result), _ = scan(_fori_scan_body_fun(body_fun), (lower_, init_val),
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 258, in scan
+    init_flat, carry_avals, carry_avals_out, init_tree, *rest = _create_jaxpr(init)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 244, in _create_jaxpr
+    jaxpr, consts, out_tree = _initial_style_jaxpr(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/common.py", line 60, in _initial_style_jaxpr
+    jaxpr, consts, out_tree = _initial_style_open_jaxpr(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/common.py", line 54, in _initial_style_open_jaxpr
+    jaxpr, _, consts = pe.trace_to_jaxpr_dynamic(wrapped_fun, in_avals, debug)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 1985, in trace_to_jaxpr_dynamic
+    jaxpr, out_avals, consts = trace_to_subjaxpr_dynamic(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 2002, in trace_to_subjaxpr_dynamic
+    ans = fun.call_wrapped(*in_tracers_)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/linear_util.py", line 167, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 1607, in scanned_fun
+    return (i + 1, body_fun()(i, x)), None
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/api.py", line 624, in cache_miss
+    top_trace.process_call(primitive, fun_, tracers, params))
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 1743, in process_call
+    jaxpr, out_type, consts = trace_to_subjaxpr_dynamic2(f, self.main, debug_info=dbg)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 2031, in trace_to_subjaxpr_dynamic2
+    ans = fun.call_wrapped(*in_tracers_)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/linear_util.py", line 167, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 234, in train_step
+    rets, gradients = value_and_grad(loss_fn, has_aux=True)(state.params, batch)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/api.py", line 1167, in value_and_grad_f
+    ans, vjp_py, aux = _vjp(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/api.py", line 2654, in _vjp
+    out_primal, out_vjp, aux = ad.vjp(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/ad.py", line 137, in vjp
+    out_primals, pvals, jaxpr, consts, aux = linearize(traceable, *primals, has_aux=True)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/ad.py", line 124, in linearize
+    jaxpr, out_pvals, consts = pe.trace_to_jaxpr_nounits(jvpfun_flat, in_pvals)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 767, in trace_to_jaxpr_nounits
+    jaxpr, (out_pvals, consts, env) = fun.call_wrapped(pvals)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/linear_util.py", line 167, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 233, in <lambda>
+    loss_fn = lambda params, batch: calculate_loss(params, state.batch_stats, batch, main_rng, train=True)
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 224, in calculate_loss
+    loss_ml, loss_mc, u_ml, _, _, batch_stats = lax.fori_loop(1, self.train_hparams['n_seq'], squential_loss,
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 1691, in fori_loop
+    (_, result), _ = scan(_fori_scan_body_fun(body_fun), (lower_, init_val),
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 258, in scan
+    init_flat, carry_avals, carry_avals_out, init_tree, *rest = _create_jaxpr(init)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 244, in _create_jaxpr
+    jaxpr, consts, out_tree = _initial_style_jaxpr(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/common.py", line 60, in _initial_style_jaxpr
+    jaxpr, consts, out_tree = _initial_style_open_jaxpr(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/common.py", line 54, in _initial_style_open_jaxpr
+    jaxpr, _, consts = pe.trace_to_jaxpr_dynamic(wrapped_fun, in_avals, debug)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 1985, in trace_to_jaxpr_dynamic
+    jaxpr, out_avals, consts = trace_to_subjaxpr_dynamic(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 2002, in trace_to_subjaxpr_dynamic
+    ans = fun.call_wrapped(*in_tracers_)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/linear_util.py", line 167, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 1607, in scanned_fun
+    return (i + 1, body_fun()(i, x)), None
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 203, in squential_loss
+    u_ml_next = u_ml_next[:,:,:,-2].set(self.xx)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/core.py", line 649, in __getattr__
+    attr = getattr(self.aval, name)
+jax._src.traceback_util.UnfilteredStackTrace: AttributeError: 'ShapedArray' object has no attribute 'set'
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 388, in <module>
+    trainer.train_model(Test_data, num_epochs=num_epochs)
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 326, in train_model
+    loss, loss_ml, loss_mc, self.state, self.main_rng = self.train_epoch(self.state, self.main_rng)
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 246, in train_epoch
+    loss, loss_ml, loss_mc, state, main_rng = lax.fori_loop(0, self.num_steps_per_epoch, train_step, (loss, loss_ml, loss_mc, state, main_rng))
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 234, in train_step
+    rets, gradients = value_and_grad(loss_fn, has_aux=True)(state.params, batch)
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 233, in <lambda>
+    loss_fn = lambda params, batch: calculate_loss(params, state.batch_stats, batch, main_rng, train=True)
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 224, in calculate_loss
+    loss_ml, loss_mc, u_ml, _, _, batch_stats = lax.fori_loop(1, self.train_hparams['n_seq'], squential_loss,
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 203, in squential_loss
+    u_ml_next = u_ml_next[:,:,:,-2].set(self.xx)
+AttributeError: 'ShapedArray' object has no attribute 'set'

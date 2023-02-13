@@ -1,0 +1,72 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.13.6
+    framework: keras
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.9.7
+    start_time: 1675583673.880555
+    t:
+      1:
+      - 2
+      - 3
+      - 12
+      - 45
+      - 55
+      2:
+      - 2
+      - 3
+      - 12
+      - 45
+      - 55
+      3:
+      - 13
+      - 19
+      - 23
+      4: 3.9.7
+      5: 0.13.6
+      8:
+      - 5
+batch_size:
+  desc: null
+  value: 5
+dt:
+  desc: null
+  value: 1
+mc_u:
+  desc: null
+  value: 1
+model_hparams:
+  desc: null
+  value:
+    act_fn: jax._src.nn.functions.relu
+    act_fn_name: relu
+    block_size:
+    - 16
+    - 32
+    - 64
+    - 128
+    - 128
+    - 128
+    - 128
+    model_type: U_net_modified
+    out_features: 10
+    padding: REPLICATE
+model_name:
+  desc: null
+  value: UNet
+n_seq:
+  desc: null
+  value: 2
+noise_level:
+  desc: null
+  value: '0.0'
+optimizer_lr:
+  desc: null
+  value: 0.0005
+optimizer_name:
+  desc: null
+  value: adam

@@ -1,0 +1,4 @@
+training new model, the num of training epochs is 100
+the shape of batch_data after transformation (5, 3, 384, 512, 10)
+  0%|                                                                                                                                                              | 0/100 [00:00<?, ?it/s]
+the shape of batch_data after transformation (5, 3, 384, 512, 10)

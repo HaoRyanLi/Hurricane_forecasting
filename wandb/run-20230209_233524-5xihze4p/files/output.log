@@ -1,0 +1,9 @@
+training new model, the num of training epochs is 2000
+the shape of batch_data: (19, 384, 512, 10)
+the shape of batch_data after transformation (10, 10, 384, 512, 10)
+  0%|                                                                                                                                                   | 0/2000 [00:00<?, ?it/s]
+The shape of u_ml_next: (10, 384, 512, 10)
+The shape of self.xy: (10, 384, 512, 2)
+The shape of u_ml_next: (10, 384, 512, 10)
+The shape of self.xy: (10, 384, 512, 2)
+the shape of batch_data: (19, 384, 512, 10)

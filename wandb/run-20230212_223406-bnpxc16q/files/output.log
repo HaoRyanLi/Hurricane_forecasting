@@ -1,0 +1,6 @@
+
+training new model, the num of training epochs is 10
+Traceback (most recent call last):
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_2d0.0.py", line 404, in <module>
+    trainer.train_model(Test_data, num_epochs=num_epochs)
+TypeError: train_model() got multiple values for argument 'num_epochs'

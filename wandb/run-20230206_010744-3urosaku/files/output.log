@@ -1,0 +1,105 @@
+loading pre-trained model
+Sucessfully loaded pre-trained modepythol
+(1, 384, 512, 10)
+Traceback (most recent call last):
+  File "/work/09012/haoli1/ls6/hurricane/code/plot_figs.py", line 383, in <module>
+    nn_sol = trainer.neural_solver(trainer.state, Test_data[:1], 10)[0]
+  File "/work/09012/haoli1/ls6/hurricane/code/plot_figs.py", line 257, in neural_solver
+    u, _, _ = lax.fori_loop(1, Nt_test, forward_map, (u, state, test_data))
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 1691, in fori_loop
+    (_, result), _ = scan(_fori_scan_body_fun(body_fun), (lower_, init_val),
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 258, in scan
+    init_flat, carry_avals, carry_avals_out, init_tree, *rest = _create_jaxpr(init)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 244, in _create_jaxpr
+    jaxpr, consts, out_tree = _initial_style_jaxpr(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/common.py", line 60, in _initial_style_jaxpr
+    jaxpr, consts, out_tree = _initial_style_open_jaxpr(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/common.py", line 54, in _initial_style_open_jaxpr
+    jaxpr, _, consts = pe.trace_to_jaxpr_dynamic(wrapped_fun, in_avals, debug)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 1985, in trace_to_jaxpr_dynamic
+    jaxpr, out_avals, consts = trace_to_subjaxpr_dynamic(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 2002, in trace_to_subjaxpr_dynamic
+    ans = fun.call_wrapped(*in_tracers_)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/linear_util.py", line 167, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 1607, in scanned_fun
+    return (i + 1, body_fun()(i, x)), None
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/api.py", line 624, in cache_miss
+    top_trace.process_call(primitive, fun_, tracers, params))
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 1743, in process_call
+    jaxpr, out_type, consts = trace_to_subjaxpr_dynamic2(f, self.main, debug_info=dbg)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 2031, in trace_to_subjaxpr_dynamic2
+    ans = fun.call_wrapped(*in_tracers_)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/linear_util.py", line 167, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/09012/haoli1/ls6/hurricane/code/plot_figs.py", line 250, in forward_map
+    u_ml_out = self.model.apply({'params': state.params, 'batch_stats': state.batch_stats}, u, self.train_hparams['dt'], train=False)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/flax/linen/module.py", line 1243, in apply
+    return apply(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/flax/core/scope.py", line 865, in wrapper
+    y = fn(root, *args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/flax/linen/module.py", line 1689, in scope_fn
+    return fn(module.clone(parent=scope), *args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/flax/linen/module.py", line 402, in wrapped_module_method
+    return self._call_wrapped_method(fun, args, kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/flax/linen/module.py", line 705, in _call_wrapped_method
+    y = fun(self, *args, **kwargs)
+  File "/work/09012/haoli1/ls6/hurricane/code/U_net_hurricane.py", line 278, in __call__
+    x, residual = DownsampleBlock(features=features, act_fn=self.act_fn, padding=self.padding, use_batch_norm=self.use_batch_norm,
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/flax/linen/module.py", line 402, in wrapped_module_method
+    return self._call_wrapped_method(fun, args, kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/flax/linen/module.py", line 705, in _call_wrapped_method
+    y = fun(self, *args, **kwargs)
+  File "/work/09012/haoli1/ls6/hurricane/code/U_net_hurricane.py", line 157, in __call__
+    residual = x = ConvLayer2(features=self.features, act_fn=self.act_fn, padding=self.padding, use_batch_norm=self.use_batch_norm)(x, train=train)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/flax/linen/module.py", line 402, in wrapped_module_method
+    return self._call_wrapped_method(fun, args, kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/flax/linen/module.py", line 705, in _call_wrapped_method
+    y = fun(self, *args, **kwargs)
+  File "/work/09012/haoli1/ls6/hurricane/code/U_net_hurricane.py", line 123, in __call__
+    activation = Conv_repl(features=self.features, kernel_size=(3, 3), name='conv1_repl')(x)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/flax/linen/module.py", line 402, in wrapped_module_method
+    return self._call_wrapped_method(fun, args, kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/flax/linen/module.py", line 705, in _call_wrapped_method
+    y = fun(self, *args, **kwargs)
+  File "/work/09012/haoli1/ls6/hurricane/code/U_net_hurricane.py", line 79, in __call__
+    activation = jnp.pad(x, pad_width=self.pad_width, mode=self.mode)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 1677, in pad
+    pad_width = _broadcast_to_pairs(pad_width, ndim(array), "pad_width")
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 1412, in _broadcast_to_pairs
+    raise ValueError(f"jnp.pad: {name} with nd={nd} has unsupported shape {nvals.shape}. "
+jax._src.traceback_util.UnfilteredStackTrace: ValueError: jnp.pad: pad_width with nd=3 has unsupported shape (4, 2). Valid shapes are (3, 2), (1, 2), (2,), (1,), or ().
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/work/09012/haoli1/ls6/hurricane/code/plot_figs.py", line 383, in <module>
+    nn_sol = trainer.neural_solver(trainer.state, Test_data[:1], 10)[0]
+  File "/work/09012/haoli1/ls6/hurricane/code/plot_figs.py", line 257, in neural_solver
+    u, _, _ = lax.fori_loop(1, Nt_test, forward_map, (u, state, test_data))
+  File "/work/09012/haoli1/ls6/hurricane/code/plot_figs.py", line 250, in forward_map
+    u_ml_out = self.model.apply({'params': state.params, 'batch_stats': state.batch_stats}, u, self.train_hparams['dt'], train=False)
+  File "/work/09012/haoli1/ls6/hurricane/code/U_net_hurricane.py", line 278, in __call__
+    x, residual = DownsampleBlock(features=features, act_fn=self.act_fn, padding=self.padding, use_batch_norm=self.use_batch_norm,
+  File "/work/09012/haoli1/ls6/hurricane/code/U_net_hurricane.py", line 157, in __call__
+    residual = x = ConvLayer2(features=self.features, act_fn=self.act_fn, padding=self.padding, use_batch_norm=self.use_batch_norm)(x, train=train)
+  File "/work/09012/haoli1/ls6/hurricane/code/U_net_hurricane.py", line 123, in __call__
+    activation = Conv_repl(features=self.features, kernel_size=(3, 3), name='conv1_repl')(x)
+  File "/work/09012/haoli1/ls6/hurricane/code/U_net_hurricane.py", line 79, in __call__
+    activation = jnp.pad(x, pad_width=self.pad_width, mode=self.mode)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 1677, in pad
+    pad_width = _broadcast_to_pairs(pad_width, ndim(array), "pad_width")
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 1412, in _broadcast_to_pairs
+    raise ValueError(f"jnp.pad: {name} with nd={nd} has unsupported shape {nvals.shape}. "
+ValueError: jnp.pad: pad_width with nd=3 has unsupported shape (4, 2). Valid shapes are (3, 2), (1, 2), (2,), (1,), or ().

@@ -1,0 +1,57 @@
+training new model, the num of training epochs is 10
+the shape of batch_data: (14, 384, 512, 10)
+the shape of batch_data after transformation (10, 5, 384, 512, 10)
+  0%|                                                                                                                                          | 0/10 [00:00<?, ?it/s]
+The shape of u_ml_next: (10, 384, 512, 10)
+The shape of self.train_xy: (10, 384, 512, 2)
+The shape of u_ml_next: (10, 384, 512, 10)
+The shape of self.train_xy: (10, 384, 512, 2)
+the shape of batch_data: (14, 384, 512, 10)
+the shape of batch_data after transformation (10, 5, 384, 512, 10)
+  0%|                                                                                                                                          | 0/10 [03:07<?, ?it/s]
+Traceback (most recent call last):
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_2d0.0.py", line 392, in <module>
+    trainer.train_model(Test_data, num_epochs=num_epochs)
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_2d0.0.py", line 331, in train_model
+    err_test = self.eval_model(self.state, test_data)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/api.py", line 620, in cache_miss
+    execute = dispatch._xla_call_impl_lazy(fun_, *tracers, **params)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/dispatch.py", line 236, in _xla_call_impl_lazy
+    return xla_callable(fun, device, backend, name, donated_invars, keep_unused,
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/linear_util.py", line 300, in memoized_fun
+    ans = call(fun, *args)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/dispatch.py", line 359, in _xla_callable_uncached
+    return lower_xla_callable(fun, device, backend, name, donated_invars, False,
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/dispatch.py", line 445, in lower_xla_callable
+    jaxpr, out_type, consts = pe.trace_to_jaxpr_final2(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 2081, in trace_to_jaxpr_final2
+    jaxpr, out_type, consts = trace_to_subjaxpr_dynamic2(fun, main, debug_info)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 2031, in trace_to_subjaxpr_dynamic2
+    ans = fun.call_wrapped(*in_tracers_)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/linear_util.py", line 167, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_2d0.0.py", line 271, in eval_model
+    u_pred = neural_solver(state, test_data, Nt_test, test_xy)
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_2d0.0.py", line 261, in neural_solver
+    u, _, _ = lax.fori_loop(1, Nt_test, forward_map, (u, state, test_data, test_xy))
+jax._src.traceback_util.UnfilteredStackTrace: ValueError: too many values to unpack (expected 3)
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_2d0.0.py", line 392, in <module>
+    trainer.train_model(Test_data, num_epochs=num_epochs)
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_2d0.0.py", line 331, in train_model
+    err_test = self.eval_model(self.state, test_data)
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_2d0.0.py", line 271, in eval_model
+    u_pred = neural_solver(state, test_data, Nt_test, test_xy)
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_2d0.0.py", line 261, in neural_solver
+    u, _, _ = lax.fori_loop(1, Nt_test, forward_map, (u, state, test_data, test_xy))
+ValueError: too many values to unpack (expected 3)

@@ -1,0 +1,112 @@
+training new model, the num of training epochs is 500
+the shape of batch_data: (5, 64, 48, 222)
+the shape of batch_data after transformation (3, 3, 64, 48, 222)
+0, the shape of x: (3, 32, 24, 222), the shape of residual: (3, 64, 48, 222)
+1, the shape of x: (3, 16, 12, 222), the shape of residual: (3, 32, 24, 222)
+2, the shape of x: (3, 8, 6, 222), the shape of residual: (3, 16, 12, 222)
+3, the shape of x: (3, 4, 3, 128), the shape of residual: (3, 8, 6, 128)
+3, the shape of x: (3, 4, 3, 128).
+0, the shape of x: (3, 8, 6, 128).
+1, the shape of x: (3, 16, 12, 222).
+2, the shape of x: (3, 32, 24, 222).
+3, the shape of x: (3, 64, 48, 222).
+0, the shape of x: (3, 32, 24, 222), the shape of residual: (3, 64, 48, 222)
+1, the shape of x: (3, 16, 12, 222), the shape of residual: (3, 32, 24, 222)
+  0%|                                                                | 0/500 [00:00<?, ?it/s]
+2, the shape of x: (3, 8, 6, 222), the shape of residual: (3, 16, 12, 222)
+3, the shape of x: (3, 4, 3, 128), the shape of residual: (3, 8, 6, 128)
+3, the shape of x: (3, 4, 3, 128).
+0, the shape of x: (3, 8, 6, 128).
+1, the shape of x: (3, 16, 12, 222).
+2, the shape of x: (3, 32, 24, 222).
+3, the shape of x: (3, 64, 48, 222).
+the shape of batch_data: (5, 64, 48, 222)
+the shape of batch_data after transformation (3, 3, 64, 48, 222)
+The shape of test data: (12, 5, 64, 48, 222)
+0, the shape of x: (5, 32, 24, 222), the shape of residual: (5, 64, 48, 222)
+1, the shape of x: (5, 16, 12, 222), the shape of residual: (5, 32, 24, 222)
+2, the shape of x: (5, 8, 6, 222), the shape of residual: (5, 16, 12, 222)
+3, the shape of x: (5, 4, 3, 128), the shape of residual: (5, 8, 6, 128)
+3, the shape of x: (5, 4, 3, 128).
+0, the shape of x: (5, 8, 6, 128).
+1, the shape of x: (5, 16, 12, 222).
+2, the shape of x: (5, 32, 24, 222).
+  0%|                                                                | 0/500 [00:30<?, ?it/s]
+Traceback (most recent call last):
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 376, in <module>
+    trainer.train_model(Test_data, num_epochs=num_epochs)
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 317, in train_model
+    err_test = self.eval_model(self.state, test_data)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/api.py", line 620, in cache_miss
+    execute = dispatch._xla_call_impl_lazy(fun_, *tracers, **params)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/dispatch.py", line 236, in _xla_call_impl_lazy
+    return xla_callable(fun, device, backend, name, donated_invars, keep_unused,
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/linear_util.py", line 300, in memoized_fun
+    ans = call(fun, *args)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/dispatch.py", line 359, in _xla_callable_uncached
+    return lower_xla_callable(fun, device, backend, name, donated_invars, False,
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/dispatch.py", line 445, in lower_xla_callable
+    jaxpr, out_type, consts = pe.trace_to_jaxpr_final2(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 2081, in trace_to_jaxpr_final2
+    jaxpr, out_type, consts = trace_to_subjaxpr_dynamic2(fun, main, debug_info)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 2031, in trace_to_subjaxpr_dynamic2
+    ans = fun.call_wrapped(*in_tracers_)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/linear_util.py", line 167, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 261, in eval_model
+    return jnp.mean((u_pred - test_data[:, n_end])**2)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/core.py", line 590, in __sub__
+    def __sub__(self, other): return self.aval._sub(self, other)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 4934, in deferring_binary_op
+    return binary_op(*args)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/api.py", line 624, in cache_miss
+    top_trace.process_call(primitive, fun_, tracers, params))
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 1743, in process_call
+    jaxpr, out_type, consts = trace_to_subjaxpr_dynamic2(f, self.main, debug_info=dbg)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 2031, in trace_to_subjaxpr_dynamic2
+    ans = fun.call_wrapped(*in_tracers_)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/linear_util.py", line 167, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/numpy/ufuncs.py", line 82, in <lambda>
+    fn = lambda x1, x2: lax_fn(*_promote_args(numpy_fn.__name__, x1, x2))
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/lax.py", line 462, in sub
+    return sub_p.bind(x, y)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/core.py", line 329, in bind
+    return self.bind_with_trace(find_top_trace(args), args, params)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/core.py", line 332, in bind_with_trace
+    out = trace.process_primitive(self, map(trace.full_raise, args), params)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 1717, in process_primitive
+    return self.default_process_primitive(primitive, tracers, params)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 1721, in default_process_primitive
+    out_avals, effects = primitive.abstract_eval(*avals, **params)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/core.py", line 365, in abstract_eval_
+    return abstract_eval(*args, **kwargs), no_effects
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/utils.py", line 66, in standard_abstract_eval
+    return core.ShapedArray(shape_rule(*avals, **kwargs),
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/lax.py", line 1572, in broadcasting_shape_rule
+    raise TypeError(f'{name} got incompatible shapes for broadcasting: '
+jax._src.traceback_util.UnfilteredStackTrace: TypeError: sub got incompatible shapes for broadcasting: (5, 64, 48, 222), (12, 64, 48, 222).
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 376, in <module>
+    trainer.train_model(Test_data, num_epochs=num_epochs)
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 317, in train_model
+    err_test = self.eval_model(self.state, test_data)
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 261, in eval_model
+    return jnp.mean((u_pred - test_data[:, n_end])**2)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 4934, in deferring_binary_op
+    return binary_op(*args)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/numpy/ufuncs.py", line 82, in <lambda>
+    fn = lambda x1, x2: lax_fn(*_promote_args(numpy_fn.__name__, x1, x2))
+TypeError: sub got incompatible shapes for broadcasting: (5, 64, 48, 222), (12, 64, 48, 222).

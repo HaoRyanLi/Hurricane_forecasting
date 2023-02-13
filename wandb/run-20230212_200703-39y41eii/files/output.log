@@ -1,0 +1,21 @@
+training new model, the num of training epochs is 10
+the shape of batch_data: (14, 384, 512, 10)
+the shape of batch_data after transformation (10, 5, 384, 512, 10)
+  0%|                                                                                                                                          | 0/10 [00:00<?, ?it/s]
+The shape of u_ml_next: (10, 384, 512, 10)
+The shape of self.train_xy: (10, 384, 512, 2)
+The shape of u_ml_next: (10, 384, 512, 10)
+The shape of self.train_xy: (10, 384, 512, 2)
+the shape of batch_data: (14, 384, 512, 10)
+the shape of batch_data after transformation (10, 5, 384, 512, 10)
+
+
+
+
+
+
+
+
+
+
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [03:34<00:00, 21.41s/it]
