@@ -1,0 +1,25 @@
+training new model, the num of training epochs is 10
+The num of num_steps_per_level 299
+The num of num_steps_per_epoch 2990
+the shape of batch_data: (5, 384, 512, 6)
+the shape of batch_data after transformation (1, 5, 384, 512, 6)
+The shape of input: (1, 384, 512, 6)
+  0%|                                                                                                                                                     | 0/10 [00:00<?, ?it/s]
+The shape of u_ml_next: (1, 384, 512, 6)
+The shape of input: (1, 384, 512, 6)
+The shape of u_ml_next: (1, 384, 512, 6)
+the shape of batch_data: (5, 384, 512, 6)
+the shape of batch_data after transformation (1, 5, 384, 512, 6)
+The shape of test data: (10, 10, 384, 512, 6)
+The shape of input: (10, 384, 512, 6)
+
+
+
+
+
+
+
+
+
+
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [26:27<00:00, 158.75s/it]

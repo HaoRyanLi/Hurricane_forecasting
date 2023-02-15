@@ -258,19 +258,17 @@ class UNet(nn.Module):
     padding: str = 'REPLICATE'
     out_features: int = 222
     use_batch_norm: bool = True
+    f_cori: float = 0
     Nc_uv: int = 0
     @nn.compact
-    def __call__(self, x: jnp.ndarray, dt, f_cori: 0, train: bool) -> jnp.ndarray:
+    def __call__(self, x: jnp.ndarray, dt, train: bool) -> jnp.ndarray:
         x_input = x
         print(f"The shape of input: {x.shape}")
         B, H, W, C = x.shape
-
-        # f_cori = jnp.tile(f_cori, (B, 1, 1, self.Nc_uv))
-        # f_cori_uv = jnp.concatenate((f_cori, -f_cori), axis=-1)
-        f_cori_uv = 0
+        f_cori = jnp.tile(self.f_cori, (B, 1, 1, self.Nc_uv))
+        f_cori_uv = jnp.concatenate((f_cori, -f_cori), axis=-1)
         x_input = jnp.concatenate((x_input[...,:2*self.Nc_uv]*(1+dt*f_cori_uv), x_input[...,2*self.Nc_uv:]), axis=-1)
         skip_connections = []
-
         for i, features in enumerate(self.block_size):
             x, residual = DownsampleBlock(features=features, act_fn=self.act_fn, padding=self.padding, use_batch_norm=self.use_batch_norm, 
                                           name=f'0_down_{i}')(x, train=train)

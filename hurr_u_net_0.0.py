@@ -41,7 +41,7 @@ from numpy.lib.stride_tricks import sliding_window_view
 path = '/work/09012/haoli1/ls6/hurricane/hurricane_data/high_reso/'
 
 use_trunc_data = False
-
+use_fori = True
 #! Step : 0 - Generate_data_initilizers
 # ? Training inputs
 dt = 15*60
@@ -59,7 +59,7 @@ CHECKPOINT_PATH = '/work/09012/haoli1/ls6/hurricane/saved_models/'
 
 Nx_int = 512
 Ny_int = 384
-Nz_int =10
+Nz_int = 10
 if dim_setting == '3d':
     Nc_dim = Nz_int
 elif dim_setting == '2d':
@@ -79,6 +79,11 @@ hf_data = h5py.File(train_file_name, 'r')
 
 all_data, norm_paras, xx_norm, yy_norm = utilities.norm_data(hf_data, Nz_int, dim_set=dim_setting)
 yy = utilities.recover_data(norm_paras, ['y'], [yy_norm])[0]
+if use_fori:
+    f_cori = 2*Omega*jnp.sin(yy*rad)
+else:
+    f_cori = np.zeros_like(yy)
+
 # all_data = np.random.normal(size=[313,Nx_int,Ny_int,222])
 Nt, Ny, Nx = all_data.shape[:3]
 
@@ -104,7 +109,6 @@ print(Test_data.shape)
 
 x = datetime.datetime.now()
 CHECKPOINT_PATH = '/work/09012/haoli1/ls6/hurricane/saved_models/'+str(x)[:10]+'/'
-
 
 class TrainState(train_state.TrainState):
     # A simple extension of TrainState to also include batch statistics
@@ -186,7 +190,7 @@ class TrainerModule:
         def squential_loss(i, args):
             loss_ml, loss_mc, u_ml, batch_data, params, batch_stats = args
             outs = self.model.apply({'params': params, 'batch_stats': batch_stats}, 
-                                        u_ml, self.train_hparams['dt'], 0, train=True, mutable=['batch_stats'])
+                                    u_ml, self.train_hparams['dt'], train=True, mutable=['batch_stats'])
             u_ml_out, new_model_state = outs
             batch_stats = new_model_state['batch_stats']
 
@@ -205,7 +209,7 @@ class TrainerModule:
             # The machine learning term loss
                 ## calute the mean equared err for one sample, mean for w,u,v and all subsequences.
                 # print(f"the u_ml_next shape {u_ml_next.shape}")
-            loss_ml += jnp.sum(jnp.mean((u_ml_out[:,1:-1,1:-1]-batch_data[:,i,1:-1,1:-1,:-2])**2, axis=(1,2,3)))/self.train_hparams['batch_size']
+            loss_ml += jnp.mean((u_ml_out[:,1:-1,1:-1]-batch_data[:,i,1:-1,1:-1,:-2])**2)
             u_ml_next = batch_data[:,i].at[:,1:-1,1:-1,:-2].set(u_ml_out[:,1:-1,1:-1])
             print(f"The shape of u_ml_next: {u_ml_next.shape}")
                 # loss_ml = 0
@@ -255,7 +259,7 @@ class TrainerModule:
         @jit
         def forward_map(i, args):
             u, state, test_data = args
-            u_ml_out = self.model.apply({'params': state.params, 'batch_stats': state.batch_stats}, u, self.train_hparams['dt'], 0, train=False)
+            u_ml_out = self.model.apply({'params': state.params, 'batch_stats': state.batch_stats}, u, self.train_hparams['dt'], train=False)
             u = test_data[:,i].at[:,1:-1,1:-1,:-2].set(u_ml_out[:,1:-1,1:-1,:])
             return u, state, test_data
 
@@ -284,7 +288,7 @@ class TrainerModule:
         if self.with_train_data:
             self.train_data = Train_data
         init_rng, self.main_rng = jax.random.split(self.main_rng)
-        variables = self.model.init(init_rng, exmp_inputs, self.train_hparams['dt'], 0, train=True)
+        variables = self.model.init(init_rng, exmp_inputs, self.train_hparams['dt'], train=True)
         self.init_params, self.init_batch_stats = variables['params'], variables['batch_stats']
         self.state = None
 
@@ -301,12 +305,10 @@ class TrainerModule:
             assert False, f'Unknown optimizer "{opt_class}"'
         # We decrease the learning rate by a factor of 0.1 after 60% and 85% of the training
         init_value=self.optimizer_hparams.pop('lr')
+        total_steps = num_epochs*(self.num_steps_per_epoch + 1)
         if self.lr_scheduler_name == 'constant':
-            lr_schedule = optax.piecewise_constant_schedule(
-                init_value=init_value,boundaries_and_scales={int(self.num_steps_per_epoch*num_epochs*0.6): 0.1,
-                                                            int(self.num_steps_per_epoch*num_epochs*0.85): 0.1})
+            lr_schedule = optax.piecewise_constant_schedule(init_value=init_value,boundaries_and_scales={int(total_steps*0.6): 0.1, int(total_steps*0.85): 0.1})
         elif self.lr_scheduler_name == 'cosine':
-            total_steps = num_epochs*self.num_steps_per_epoch + num_epochs
             lr_schedule = optax.warmup_cosine_decay_schedule(init_value=init_value, peak_value=10*init_value,warmup_steps=int(total_steps*0.2),
                                                             decay_steps=total_steps, end_value=init_value*1e-1)
         # Clip gradients at max value, and evt. apply weight decay
@@ -363,31 +365,19 @@ class TrainerModule:
         # Check whether a pretrained model exist for this autoencoder
         return os.path.isfile(os.path.join(CHECKPOINT_PATH, f'{self.model_name}.ckpt'))
 
-# for opt in {'adamw', 'adam'}:
-#     CHECKPOINT_PATH = '/work/09012/haoli1/ls6/mc_solver/2D_NS/saved_models/2022-11-20/tanh/w_loss_ml/' + opt
-#     num_epochs=5000
-#     print(f"training new model, the num of training epochs is {num_epochs}")
-#     trainer = TrainerModule(model_name="U-Net", model_class=U_net.UNet, model_hparams={"act_fn": nn.tanh}, 
-#                         optimizer_name=opt, optimizer_hparams={"lr": 1e-3,"weight_decay": 1e-4},
-#                         exmp_inputs=jax.device_put(Train_data[0]), 
-#                         train_hparams={'batch_size':5, 'n_seq':2, 'mc_u':1e7, 'mc_rho':1e7, 'dt':0.01})
-    
-#     trainer.train_model(Train_data, Test_data, num_epochs=num_epochs)
-#     print(f"The training error is {trainer.eval_model(trainer.state, Test_data)}")                      
-
 trainer = TrainerModule(model_name="UNet", model_class=U_net.UNet,
-                        model_hparams={"act_fn": nn.relu, "act_fn_name": 'relu',  "padding": "REPLICATE", "block_size": (16, 32, 64, 128, 128, 128, 128), 
-                        "out_features": Train_data.shape[-1]-2, "model_type": "U_net_modified"}, 
+                        model_hparams={"act_fn": nn.relu, "act_fn_name": 'relu',  "padding": "REPLICATE", "block_size": ( 32, 64, 128, 128, 128, 128, 128), 
+                        "out_features": Train_data.shape[-1]-2, "model_type": "U_net_modified", "f_cori":f_cori, "Nc_uv":Nc_dim}, 
                         optimizer_name="adam", lr_scheduler_name="cosine", optimizer_hparams={"lr": 1e-4,"weight_decay": 1e-4},
                         exmp_inputs=jax.device_put(Train_data[:1]),
-                        train_hparams={'batch_size':10, 'n_seq':5, 'mc_u':1, 'dt':dt, 'noise_level':0.0, 'scaling': 1},
+                        train_hparams={'batch_size':5, 'n_seq':5, 'mc_u':1, 'dt':dt, 'noise_level':0.0, 'scaling': 1},
                         upload_run=True)
+
 # print("loading pre-trained model")
 # trainer.load_model()
 # print("Sucessfully loaded pre-trained modepythol")
-
 # print(trainer.eval_model(trainer.state, Test_data))
 
-num_epochs=2000
+num_epochs=5
 print(f"training new model, the num of training epochs is {num_epochs}")
 trainer.train_model(Test_data, num_epochs=num_epochs)
