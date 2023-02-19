@@ -33,7 +33,7 @@ batch_size_test =5
 
 Nx_int = 512
 Ny_int = 384
-Nz_int = 10
+Nz_int = 1
 
 # ? Step 0.3 - Spectral method for 2D Navier-Stoke equation initialize parameters
 # initialize physic parameters
@@ -57,7 +57,7 @@ print('Loading train data ...')
     
 hf_data = h5py.File(train_file_name, 'r')
 all_data, xx_norm, yy_norm = utilities.norm_data(hf_data, norm_paras, Nz_int, dim_set=dim_setting)
-all_data = jax.device_put(all_data)
+# all_data = jax.device_put(all_data)
 yy = utilities.recover_norm_data(norm_paras, ['y'], [yy_norm])[0]
 
 if use_fori:
@@ -73,7 +73,7 @@ if use_trunc_data:
     Ny_start = (Ny-Ny_int)//2
     all_data = all_data[:,Ny_start:Ny_start+Ny_int, Nx_start:Nx_start+Nx_int]
 
-num_train = 253
+num_train = 300
 num_test = Nt - num_train
 Train_data = all_data[:Nz_int, :num_train]
 
@@ -84,6 +84,7 @@ print("Train data shape: ", Train_data.shape)
 
 print('=' * 20 + ' >>')
 print('Loading test data ...')
+
 Test_data = all_data[:Nz_int,num_train:]
 del all_data
 
@@ -98,7 +99,7 @@ trainer = TrainerModule(project="hurricane-U-net-2d", model_name="UNet", model_c
                         optimizer_name="adam", lr_scheduler_name="cosine", optimizer_hparams={"lr": 1e-4,"weight_decay": 1e-4},
                         exmp_inputs=jax.device_put(Train_data[0,:1]),
                         train_hparams={'batch_size':10, 'n_seq':5, 'mc_u':1, 'dt':dt, 'noise_level':0.0}, num_train=Train_data.shape[1], 
-                        check_pt=CHECKPOINT_PATH, norm_paras=norm_paras, use_fori=use_fori, num_level=Nz_int,
+                        check_pt=CHECKPOINT_PATH, norm_paras=norm_paras, use_fori=use_fori, num_level=Nz_int, scal_fact=np.array([1,1,1,1]),
                         upload_run=True)
 
 # print("loading pre-trained model")
@@ -106,7 +107,7 @@ trainer = TrainerModule(project="hurricane-U-net-2d", model_name="UNet", model_c
 # print("Sucessfully loaded pre-trained modepythol")
 # print(trainer.eval_model(trainer.state, Test_data))
 
-num_epochs=3
+num_epochs=5
 print(f"training new model, the num of training epochs is {num_epochs}")
 trainer.train_model(Train_data, Test_data, num_epochs=num_epochs)
 import os, psutil; print(psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2)

@@ -154,15 +154,21 @@ def get_max_min(data, Nz):
         key = keys[i]
         print(f"The max value of {key} is {np.max(data_list[i])}. The min value of {key} is {np.min(data_list[i])}")
 
-def get_real_rel_err(norm_paras, norm_data_nn, norm_data_true, Nz):
+def get_real_rel_err(norm_paras, norm_data_nn, norm_data_true, Nz=1):
     data_nn = recover_norm_data_woxy(norm_paras, norm_data_nn, Nz)
     data_true = recover_norm_data_woxy(norm_paras, norm_data_true, Nz)
+    print(f"The shape of data_nn: {data_nn.shape}")
+    print(f"The shape of data_true: {data_true.shape}")
 
     rel_err_sum = 0
     err_list = []
     for i in range(4):
         rel_err = jnp.mean((data_nn[...,i*Nz:(i+1)*Nz]-data_true[...,i*Nz:(i+1)*Nz])**2)/jnp.mean(data_true[...,i*Nz:(i+1)*Nz]**2)
-        print(f"The L2 norm of data_true: {jnp.mean(data_true[...,i*Nz:(i+1)*Nz]**2)}")
         rel_err_sum +=  rel_err
         err_list.append(rel_err)
     return *err_list, rel_err_sum
+
+def get_weighted_loss(err, scal_fact, Nz):
+    err_u, err_v, err_d, err_p = jnp.mean(err[...,:Nz]), jnp.mean(err[...,Nz:2*Nz]), jnp.mean(err[...,2*Nz:3*Nz]), jnp.mean(err[...,3*Nz:4*Nz])
+    err_arr = jnp.array([err_u, err_v, err_d, err_p])
+    return jnp.dot(scal_fact, err_arr)/jnp.sum(scal_fact)

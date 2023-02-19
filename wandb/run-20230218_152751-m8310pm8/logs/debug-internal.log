@@ -13251,3 +13251,130 @@
 2023-02-19 06:30:58,460 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
 2023-02-19 06:31:13,609 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
 2023-02-19 06:31:13,609 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:31:25,883 DEBUG   SenderThread:2706437 [sender.py:send():303] send: stats
+2023-02-19 06:31:28,754 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:31:28,754 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:31:38,178 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: partial_history
+2023-02-19 06:31:38,178 DEBUG   SenderThread:2706437 [sender.py:send():303] send: history
+2023-02-19 06:31:38,179 DEBUG   SenderThread:2706437 [sender.py:send():303] send: summary
+2023-02-19 06:31:38,182 INFO    SenderThread:2706437 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2023-02-19 06:31:38,582 INFO    Thread-13 :2706437 [dir_watcher.py:_on_file_modified():292] file/dir modified: /work/09012/haoli1/ls6/hurricane/code/wandb/run-20230218_152751-m8310pm8/files/wandb-summary.json
+2023-02-19 06:31:40,584 INFO    Thread-13 :2706437 [dir_watcher.py:_on_file_modified():292] file/dir modified: /work/09012/haoli1/ls6/hurricane/code/wandb/run-20230218_152751-m8310pm8/files/output.log
+2023-02-19 06:31:43,897 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:31:43,900 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:31:55,885 DEBUG   SenderThread:2706437 [sender.py:send():303] send: stats
+2023-02-19 06:31:59,041 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:31:59,042 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:32:14,191 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:32:14,192 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:32:25,887 DEBUG   SenderThread:2706437 [sender.py:send():303] send: stats
+2023-02-19 06:32:29,340 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:32:29,341 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:32:44,489 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:32:44,490 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:32:53,777 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: partial_history
+2023-02-19 06:32:53,778 DEBUG   SenderThread:2706437 [sender.py:send():303] send: history
+2023-02-19 06:32:53,778 DEBUG   SenderThread:2706437 [sender.py:send():303] send: summary
+2023-02-19 06:32:53,781 INFO    SenderThread:2706437 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2023-02-19 06:32:54,660 INFO    Thread-13 :2706437 [dir_watcher.py:_on_file_modified():292] file/dir modified: /work/09012/haoli1/ls6/hurricane/code/wandb/run-20230218_152751-m8310pm8/files/wandb-summary.json
+2023-02-19 06:32:54,661 INFO    Thread-13 :2706437 [dir_watcher.py:_on_file_modified():292] file/dir modified: /work/09012/haoli1/ls6/hurricane/code/wandb/run-20230218_152751-m8310pm8/files/output.log
+2023-02-19 06:32:55,889 DEBUG   SenderThread:2706437 [sender.py:send():303] send: stats
+2023-02-19 06:32:59,634 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:32:59,635 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:33:14,777 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:33:14,778 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:33:25,891 DEBUG   SenderThread:2706437 [sender.py:send():303] send: stats
+2023-02-19 06:33:29,919 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:33:29,919 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:33:45,062 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:33:45,064 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:33:55,893 DEBUG   SenderThread:2706437 [sender.py:send():303] send: stats
+2023-02-19 06:34:00,208 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:34:00,208 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:34:09,252 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: partial_history
+2023-02-19 06:34:09,253 DEBUG   SenderThread:2706437 [sender.py:send():303] send: history
+2023-02-19 06:34:09,254 DEBUG   SenderThread:2706437 [sender.py:send():303] send: summary
+2023-02-19 06:34:09,256 INFO    SenderThread:2706437 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2023-02-19 06:34:09,746 INFO    Thread-13 :2706437 [dir_watcher.py:_on_file_modified():292] file/dir modified: /work/09012/haoli1/ls6/hurricane/code/wandb/run-20230218_152751-m8310pm8/files/wandb-summary.json
+2023-02-19 06:34:10,747 INFO    Thread-13 :2706437 [dir_watcher.py:_on_file_modified():292] file/dir modified: /work/09012/haoli1/ls6/hurricane/code/wandb/run-20230218_152751-m8310pm8/files/output.log
+2023-02-19 06:34:15,400 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:34:15,400 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:34:25,895 DEBUG   SenderThread:2706437 [sender.py:send():303] send: stats
+2023-02-19 06:34:30,545 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:34:30,546 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:34:45,686 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:34:45,686 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:34:55,897 DEBUG   SenderThread:2706437 [sender.py:send():303] send: stats
+2023-02-19 06:35:00,827 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:35:00,827 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:35:15,969 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:35:15,970 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:35:24,715 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: partial_history
+2023-02-19 06:35:24,716 DEBUG   SenderThread:2706437 [sender.py:send():303] send: history
+2023-02-19 06:35:24,717 DEBUG   SenderThread:2706437 [sender.py:send():303] send: summary
+2023-02-19 06:35:24,719 INFO    SenderThread:2706437 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2023-02-19 06:35:24,831 INFO    Thread-13 :2706437 [dir_watcher.py:_on_file_modified():292] file/dir modified: /work/09012/haoli1/ls6/hurricane/code/wandb/run-20230218_152751-m8310pm8/files/wandb-summary.json
+2023-02-19 06:35:25,899 DEBUG   SenderThread:2706437 [sender.py:send():303] send: stats
+2023-02-19 06:35:26,832 INFO    Thread-13 :2706437 [dir_watcher.py:_on_file_modified():292] file/dir modified: /work/09012/haoli1/ls6/hurricane/code/wandb/run-20230218_152751-m8310pm8/files/output.log
+2023-02-19 06:35:31,111 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:35:31,111 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:35:46,265 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:35:46,266 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:35:55,901 DEBUG   SenderThread:2706437 [sender.py:send():303] send: stats
+2023-02-19 06:36:01,408 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:36:01,409 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:36:16,550 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:36:16,550 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:36:25,903 DEBUG   SenderThread:2706437 [sender.py:send():303] send: stats
+2023-02-19 06:36:31,691 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:36:31,691 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:36:40,349 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: partial_history
+2023-02-19 06:36:40,350 DEBUG   SenderThread:2706437 [sender.py:send():303] send: history
+2023-02-19 06:36:40,350 DEBUG   SenderThread:2706437 [sender.py:send():303] send: summary
+2023-02-19 06:36:40,353 INFO    SenderThread:2706437 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2023-02-19 06:36:40,917 INFO    Thread-13 :2706437 [dir_watcher.py:_on_file_modified():292] file/dir modified: /work/09012/haoli1/ls6/hurricane/code/wandb/run-20230218_152751-m8310pm8/files/wandb-summary.json
+2023-02-19 06:36:40,917 INFO    Thread-13 :2706437 [dir_watcher.py:_on_file_modified():292] file/dir modified: /work/09012/haoli1/ls6/hurricane/code/wandb/run-20230218_152751-m8310pm8/files/output.log
+2023-02-19 06:36:46,833 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:36:46,834 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:36:55,904 DEBUG   SenderThread:2706437 [sender.py:send():303] send: stats
+2023-02-19 06:37:01,975 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:37:01,976 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:37:17,118 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:37:17,119 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:37:25,909 DEBUG   SenderThread:2706437 [sender.py:send():303] send: stats
+2023-02-19 06:37:32,263 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:37:32,263 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:37:47,404 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:37:47,405 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:37:55,835 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: partial_history
+2023-02-19 06:37:55,836 DEBUG   SenderThread:2706437 [sender.py:send():303] send: history
+2023-02-19 06:37:55,836 DEBUG   SenderThread:2706437 [sender.py:send():303] send: summary
+2023-02-19 06:37:55,838 INFO    SenderThread:2706437 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2023-02-19 06:37:55,908 DEBUG   SenderThread:2706437 [sender.py:send():303] send: stats
+2023-02-19 06:37:56,003 INFO    Thread-13 :2706437 [dir_watcher.py:_on_file_modified():292] file/dir modified: /work/09012/haoli1/ls6/hurricane/code/wandb/run-20230218_152751-m8310pm8/files/wandb-summary.json
+2023-02-19 06:37:57,004 INFO    Thread-13 :2706437 [dir_watcher.py:_on_file_modified():292] file/dir modified: /work/09012/haoli1/ls6/hurricane/code/wandb/run-20230218_152751-m8310pm8/files/output.log
+2023-02-19 06:38:02,546 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:38:02,546 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:38:17,689 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:38:17,690 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:38:25,910 DEBUG   SenderThread:2706437 [sender.py:send():303] send: stats
+2023-02-19 06:38:32,835 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:38:32,836 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:38:47,980 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:38:47,980 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:38:55,912 DEBUG   SenderThread:2706437 [sender.py:send():303] send: stats
+2023-02-19 06:39:03,354 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:39:03,354 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:39:11,304 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: partial_history
+2023-02-19 06:39:11,305 DEBUG   SenderThread:2706437 [sender.py:send():303] send: history
+2023-02-19 06:39:11,305 DEBUG   SenderThread:2706437 [sender.py:send():303] send: summary
+2023-02-19 06:39:11,308 INFO    SenderThread:2706437 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2023-02-19 06:39:12,093 INFO    Thread-13 :2706437 [dir_watcher.py:_on_file_modified():292] file/dir modified: /work/09012/haoli1/ls6/hurricane/code/wandb/run-20230218_152751-m8310pm8/files/wandb-summary.json
+2023-02-19 06:39:13,094 INFO    Thread-13 :2706437 [dir_watcher.py:_on_file_modified():292] file/dir modified: /work/09012/haoli1/ls6/hurricane/code/wandb/run-20230218_152751-m8310pm8/files/output.log
+2023-02-19 06:39:18,540 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:39:18,541 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:39:25,914 DEBUG   SenderThread:2706437 [sender.py:send():303] send: stats
+2023-02-19 06:39:33,697 DEBUG   HandlerThread:2706437 [handler.py:handle_request():139] handle_request: stop_status
+2023-02-19 06:39:33,697 DEBUG   SenderThread:2706437 [sender.py:send_request():317] send_request: stop_status
+2023-02-19 06:39:44,224 INFO    MainThread:2706437 [internal.py:handle_exit():77] Internal process exited
+2023-02-19 06:39:44,225 WARNING MsgRouterThr:2706437 [router.py:message_loop():74] EOFError seen in message_loop

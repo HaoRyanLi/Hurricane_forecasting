@@ -31,7 +31,7 @@ class TrainState(train_state.TrainState):
 class TrainerModule:
     def __init__(self, project: str, model_name: str, model_class: nn.Module, model_hparams: dict,
                  optimizer_name: str, lr_scheduler_name: str, optimizer_hparams: dict, exmp_inputs: np.array,
-                 train_hparams: dict, num_train: int, check_pt: str, norm_paras: dict,
+                 train_hparams: dict, num_train: int, check_pt: str, norm_paras: dict, scal_fact: np.array,
                  batch_size_test=5,
                  use_fori=False, num_level=1, with_train_data=True, upload_run=False, seed=42):
         """
@@ -69,6 +69,7 @@ class TrainerModule:
         self.log_dir = check_pt
         self.check_pt = check_pt
         self.norm_paras = norm_paras
+        self.scal_fact = scal_fact
         # Create jitted training and eval functions
         self.create_functions()
         # Initialize model
@@ -77,7 +78,7 @@ class TrainerModule:
 
     def upload_wandb(self):
         # Uploading to wandb
-        self.run_name = ('F_'+str(self.use_fori)+'_dt_'+str("%1.0e"%self.train_hparams['dt'])+'_D'+str(self.num_train)+'_MCa_'+str("%1.0e"%self.train_hparams['mc_u'])+'_Noise_' 
+        self.run_name = ('3D_F_'+str(self.use_fori)+'_dt_'+str("%1.0e"%self.train_hparams['dt'])+'_D'+str(self.num_train)+'_MCa_'+str("%1.0e"%self.train_hparams['mc_u'])+'_Noise_' 
         + str(self.train_hparams['noise_level'])+'_'+self.model_hparams['act_fn_name']+'_N_seq_'+str(self.train_hparams['n_seq'])+'_bs_'
         + str(self.train_hparams['batch_size'])+self.optimizer_name+'_'+self.lr_scheduler_name+str("%1.0e"%self.optimizer_hparams['lr']))
         if self.upload_run:
