@@ -116,9 +116,6 @@ class TrainerModule:
             u_ml_out, new_model_state = outs
             batch_stats = new_model_state['batch_stats']
 
-            # primes_init = utilities.gen_primes_init_from_data(u_ml)
-            # levelset_init = jnp.tile(Levelset_init, (batch_data.shape[0],1,1,1))
-            
             # u_mc0 = utilities.gen_data_from_primes_array(pred_array)
             # u_mc = u_mc0
             # loss_mc += jnp.sum(jnp.mean(jnp.mean((u_mc-u_ml_next)**2, axis=-1), axis=(-1,-2)))/self.train_hparams['batch_size']
@@ -129,14 +126,10 @@ class TrainerModule:
                 # print(f"the w_mc shape {w_mc.shape}")
                 # loss_mc += jnp.sum(jnp.mean((w_mc-u_ml_next[...,0])**2, axis=(1,2)))*self.train_hparams['scaling']/self.train_hparams['batch_size']
             # The machine learning term loss
-                ## calute the mean equared err for one sample, mean for w,u,v and all subsequences.
-                # print(f"the u_ml_next shape {u_ml_next.shape}")
-            loss_ml += jnp.mean((u_ml_out[:,1:-1,1:-1]-batch_data[:,i,1:-1,1:-1,:-2])**2)
+            loss_ml += jnp.dot(self.scal_fact ,jnp.mean((u_ml_out[:,1:-1,1:-1]-batch_data[:,i,1:-1,1:-1,:-2])**2, axis=(0,1,2)))
+            # loss_ml += jnp.mean((u_ml_out[:,1:-1,1:-1]-batch_data[:,i,1:-1,1:-1,:-2])**2)
             u_ml_next = batch_data[:,i].at[:,1:-1,1:-1,:-2].set(u_ml_out[:,1:-1,1:-1])
             print(f"The shape of u_ml_next: {u_ml_next.shape}")
-                # loss_ml = 0
-                # print(f"the div shape {U_net.div_free_loss(u_ml_next, axis=(1,2)).shape}")
-                # loss_mc_rho += jnp.sum(U_net.div_free_loss(u_ml_next, axis=(1,2)))*self.train_hparams['scaling']/self.train_hparams['batch_size']
             return loss_ml, loss_mc, u_ml_next, batch_data, params, batch_stats
         
         def calculate_loss(params, batch_stats, batch_data, main_rng, train=True):
@@ -189,7 +182,6 @@ class TrainerModule:
             Nt_test = N//self.batch_size_test
             num_test = Nt_test * self.batch_size_test
             test_data = test_data[:num_test].reshape((self.batch_size_test, Nt_test, H, W, C))
-            print(f"The shape of test data: {test_data.shape}")
             u_pred = neural_solver(state, test_data, Nt_test)
             u_true = test_data[:,-1]
             rel_err_u, rel_err_v, rel_rr_d, rel_err_p, rel_err_sum = utilities.get_real_rel_err(self.norm_paras, u_pred, u_true, self.model_hparams['Nc_uv'])
@@ -254,7 +246,7 @@ class TrainerModule:
         for epoch_idx in tqdm(range(1, num_epochs+1)):
             loss, loss_ml, loss_mc = self.train_epoch()
             rel_err_u, rel_err_v, rel_rr_d, rel_err_p, err_test = self.eval_model(self.state, test_data)
-            print(rel_err_u, rel_err_v, rel_rr_d, rel_err_p, err_test)
+            # print(rel_err_u, rel_err_v, rel_rr_d, rel_err_p, err_test)
             if err_test_min >= err_test:
                 err_test_min = err_test
                 epoch_min = epoch_idx

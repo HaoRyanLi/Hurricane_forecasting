@@ -114,9 +114,6 @@ class TrainerModule:
             u_ml_out, new_model_state = outs
             batch_stats = new_model_state['batch_stats']
 
-            # primes_init = utilities.gen_primes_init_from_data(u_ml)
-            # levelset_init = jnp.tile(Levelset_init, (batch_data.shape[0],1,1,1))
-            
             # u_mc0 = utilities.gen_data_from_primes_array(pred_array)
             # u_mc = u_mc0
             # loss_mc += jnp.sum(jnp.mean(jnp.mean((u_mc-u_ml_next)**2, axis=-1), axis=(-1,-2)))/self.train_hparams['batch_size']
@@ -127,15 +124,9 @@ class TrainerModule:
                 # print(f"the w_mc shape {w_mc.shape}")
                 # loss_mc += jnp.sum(jnp.mean((w_mc-u_ml_next[...,0])**2, axis=(1,2)))*self.train_hparams['scaling']/self.train_hparams['batch_size']
             # The machine learning term loss
-                ## calute the mean equared err for one sample, mean for w,u,v and all subsequences.
-                # print(f"the u_ml_next shape {u_ml_next.shape}")
-            # loss_ml += utilities.get_weighted_loss((u_ml_out[:,1:-1,1:-1]-batch_data[:,i,1:-1,1:-1,:-2])**2, self.scal_fact, self.model_hparams['Nc_uv'])
-            loss_ml += jnp.mean((u_ml_out[:,1:-1,1:-1]-batch_data[:,i,1:-1,1:-1,:-2])**2)
+            loss_ml += jnp.dot(self.scal_fact ,jnp.mean((u_ml_out[:,1:-1,1:-1]-batch_data[:,i,1:-1,1:-1,:-2])**2, axis=(0,1,2)))
             u_ml_next = batch_data[:,i].at[:,1:-1,1:-1,:-2].set(u_ml_out[:,1:-1,1:-1])
             print(f"The shape of u_ml_next: {u_ml_next.shape}")
-                # loss_ml = 0
-                # print(f"the div shape {U_net.div_free_loss(u_ml_next, axis=(1,2)).shape}")
-                # loss_mc_rho += jnp.sum(U_net.div_free_loss(u_ml_next, axis=(1,2)))*self.train_hparams['scaling']/self.train_hparams['batch_size']
             return loss_ml, loss_mc, u_ml_next, batch_data, params, batch_stats
         
         def calculate_loss(params, batch_stats, batch_data, main_rng, train=True):
@@ -155,6 +146,7 @@ class TrainerModule:
             loss = loss_ml + self.train_hparams['mc_u']*loss_mc
             return loss, (loss_ml, loss_mc, batch_stats, main_rng)
         
+        @jit
         def train_step(state, batch, main_rng):
             loss_fn = lambda params, batch: calculate_loss(params, state.batch_stats, batch, main_rng, train=True)
             rets, gradients = value_and_grad(loss_fn, has_aux=True)(state.params, batch)
@@ -186,8 +178,7 @@ class TrainerModule:
 
         self.neural_solver = neural_solver
         self.eval_model = jax.jit(eval_model, static_argnames=['n_start', 'n_end'])
-        # self.eval_model = eval_model
-        self.train_step = jax.jit(train_step)
+        self.train_step = train_step
 
     def init_model(self, exmp_inputs):
         init_rng, self.main_rng = jax.random.split(self.main_rng)
@@ -246,12 +237,12 @@ class TrainerModule:
         print(f"The num of num_steps_per_epoch {self.num_steps_per_epoch}")
 
         self.init_optimizer(num_epochs)
-        err_test_min = 1e4
+        err_test_min = 1e10
         epoch_min = -1
         for epoch_idx in tqdm(range(1, num_epochs+1)):
             loss, loss_ml, loss_mc = self.train_epoch(train_data)
             rel_err_u, rel_err_v, rel_rr_d, rel_err_p, err_test = self.eval_model(self.state, test_data)
-            print(rel_err_u, rel_err_v, rel_rr_d, rel_err_p, err_test)
+            # print(rel_err_u, rel_err_v, rel_rr_d, rel_err_p, err_test)
             if err_test_min >= err_test:
                 err_test_min = err_test
                 epoch_min = epoch_idx

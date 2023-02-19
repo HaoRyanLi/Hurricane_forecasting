@@ -33,7 +33,12 @@ batch_size_test =5
 
 Nx_int = 512
 Ny_int = 384
-Nz_int = 1
+Nz_int = 10
+
+scal_factor = 100
+scal_vec = np.concatenate([scal_factor*np.ones(Nz_int), scal_factor*np.ones(Nz_int), np.ones(Nz_int), np.ones(Nz_int)])
+scal_vec = scal_vec/np.sqrt(np.sum(scal_vec**2))
+print(f"The norm of scal_vec is {np.dot(scal_vec, scal_vec)}")
 
 # ? Step 0.3 - Spectral method for 2D Navier-Stoke equation initialize parameters
 # initialize physic parameters
@@ -99,7 +104,7 @@ trainer = TrainerModule(project="hurricane-U-net-2d", model_name="UNet", model_c
                         optimizer_name="adam", lr_scheduler_name="cosine", optimizer_hparams={"lr": 1e-4,"weight_decay": 1e-4},
                         exmp_inputs=jax.device_put(Train_data[0,:1]),
                         train_hparams={'batch_size':10, 'n_seq':5, 'mc_u':1, 'dt':dt, 'noise_level':0.0}, num_train=Train_data.shape[1], 
-                        check_pt=CHECKPOINT_PATH, norm_paras=norm_paras, use_fori=use_fori, num_level=Nz_int, scal_fact=np.array([1,1,1,1]),
+                        check_pt=CHECKPOINT_PATH, norm_paras=norm_paras, use_fori=use_fori, num_level=Nz_int, scal_fact=scal_vec,
                         upload_run=True)
 
 # print("loading pre-trained model")
@@ -107,7 +112,7 @@ trainer = TrainerModule(project="hurricane-U-net-2d", model_name="UNet", model_c
 # print("Sucessfully loaded pre-trained modepythol")
 # print(trainer.eval_model(trainer.state, Test_data))
 
-num_epochs=5
+num_epochs=3
 print(f"training new model, the num of training epochs is {num_epochs}")
 trainer.train_model(Train_data, Test_data, num_epochs=num_epochs)
 import os, psutil; print(psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2)

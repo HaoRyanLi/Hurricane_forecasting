@@ -1,0 +1,106 @@
+
+[34m[1mwandb[39m[22m: [33mWARNING[39m Serializing object of type ndarray that is 786576 bytes
+training new model, the num of training epochs is 10
+The num of num_steps_per_level 29
+The num of num_steps_per_epoch 290
+  0%|                                                                                                                                            | 0/10 [00:00<?, ?it/s]
+the shape of batch_data: (14, 384, 512, 6)
+  0%|                                                                                                                                            | 0/10 [00:01<?, ?it/s]
+Traceback (most recent call last):
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_2d0.0.py", line 111, in <module>
+    trainer.train_model(Train_data, Test_data, num_epochs=num_epochs)
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod_2d.py", line 249, in train_model
+    loss, loss_ml, loss_mc = self.train_epoch(train_data)
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod_2d.py", line 231, in train_epoch
+    loss, loss_ml, loss_mc, self.state, self.main_rng = self.train_step(self.state, batch, self.main_rng)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/api.py", line 620, in cache_miss
+    execute = dispatch._xla_call_impl_lazy(fun_, *tracers, **params)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/dispatch.py", line 236, in _xla_call_impl_lazy
+    return xla_callable(fun, device, backend, name, donated_invars, keep_unused,
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/linear_util.py", line 300, in memoized_fun
+    ans = call(fun, *args)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/dispatch.py", line 359, in _xla_callable_uncached
+    return lower_xla_callable(fun, device, backend, name, donated_invars, False,
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/dispatch.py", line 445, in lower_xla_callable
+    jaxpr, out_type, consts = pe.trace_to_jaxpr_final2(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 2081, in trace_to_jaxpr_final2
+    jaxpr, out_type, consts = trace_to_subjaxpr_dynamic2(fun, main, debug_info)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 2031, in trace_to_subjaxpr_dynamic2
+    ans = fun.call_wrapped(*in_tracers_)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/linear_util.py", line 167, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod_2d.py", line 159, in train_step
+    rets, gradients = value_and_grad(loss_fn, has_aux=True)(state.params, batch)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/api.py", line 1167, in value_and_grad_f
+    ans, vjp_py, aux = _vjp(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/api.py", line 2654, in _vjp
+    out_primal, out_vjp, aux = ad.vjp(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/ad.py", line 137, in vjp
+    out_primals, pvals, jaxpr, consts, aux = linearize(traceable, *primals, has_aux=True)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/ad.py", line 124, in linearize
+    jaxpr, out_pvals, consts = pe.trace_to_jaxpr_nounits(jvpfun_flat, in_pvals)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 767, in trace_to_jaxpr_nounits
+    jaxpr, (out_pvals, consts, env) = fun.call_wrapped(pvals)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/linear_util.py", line 167, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod_2d.py", line 158, in <lambda>
+    loss_fn = lambda params, batch: calculate_loss(params, state.batch_stats, batch, main_rng, train=True)
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod_2d.py", line 152, in calculate_loss
+    loss_ml, loss_mc, u_ml, _, _, batch_stats = lax.fori_loop(1, self.train_hparams['n_seq'], squential_loss,
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 1691, in fori_loop
+    (_, result), _ = scan(_fori_scan_body_fun(body_fun), (lower_, init_val),
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 258, in scan
+    init_flat, carry_avals, carry_avals_out, init_tree, *rest = _create_jaxpr(init)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 244, in _create_jaxpr
+    jaxpr, consts, out_tree = _initial_style_jaxpr(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/common.py", line 60, in _initial_style_jaxpr
+    jaxpr, consts, out_tree = _initial_style_open_jaxpr(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/common.py", line 54, in _initial_style_open_jaxpr
+    jaxpr, _, consts = pe.trace_to_jaxpr_dynamic(wrapped_fun, in_avals, debug)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 1985, in trace_to_jaxpr_dynamic
+    jaxpr, out_avals, consts = trace_to_subjaxpr_dynamic(
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 2002, in trace_to_subjaxpr_dynamic
+    ans = fun.call_wrapped(*in_tracers_)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/linear_util.py", line 167, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 1607, in scanned_fun
+    return (i + 1, body_fun()(i, x)), None
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod_2d.py", line 132, in squential_loss
+    loss_ml += utilities.get_weighted_loss((u_ml_out[:,1:-1,1:-1]-batch_data[:,i,1:-1,1:-1,:-2])**2)
+jax._src.traceback_util.UnfilteredStackTrace: TypeError: get_weighted_loss() missing 2 required positional arguments: 'scal_fact' and 'Nz'
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_2d0.0.py", line 111, in <module>
+    trainer.train_model(Train_data, Test_data, num_epochs=num_epochs)
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod_2d.py", line 249, in train_model
+    loss, loss_ml, loss_mc = self.train_epoch(train_data)
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod_2d.py", line 231, in train_epoch
+    loss, loss_ml, loss_mc, self.state, self.main_rng = self.train_step(self.state, batch, self.main_rng)
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod_2d.py", line 159, in train_step
+    rets, gradients = value_and_grad(loss_fn, has_aux=True)(state.params, batch)
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod_2d.py", line 158, in <lambda>
+    loss_fn = lambda params, batch: calculate_loss(params, state.batch_stats, batch, main_rng, train=True)
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod_2d.py", line 152, in calculate_loss
+    loss_ml, loss_mc, u_ml, _, _, batch_stats = lax.fori_loop(1, self.train_hparams['n_seq'], squential_loss,
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod_2d.py", line 132, in squential_loss
+    loss_ml += utilities.get_weighted_loss((u_ml_out[:,1:-1,1:-1]-batch_data[:,i,1:-1,1:-1,:-2])**2)
+TypeError: get_weighted_loss() missing 2 required positional arguments: 'scal_fact' and 'Nz'
