@@ -2,6 +2,13 @@ from scipy.interpolate import griddata
 import time
 import numpy as np
 import jax.numpy as jnp 
+import matplotlib.pyplot as plt
+import matplotlib
+
+import tkinter
+import matplotlib
+matplotlib.use('TkAgg')
+
 
 def data_interpolation(data_orig, Nt, Nz, points, xx, yy):
     data_int = []
@@ -54,62 +61,108 @@ def transform_data(data, n_seq):
     batched_samples = rolling_window(data, n_seq)
     return batched_samples
 
-def norm_data(h5_file, Nz, dim_set='3d'):
-    norm_paras = {}
+def norm_data(h5_file, norm_paras, Nz, dim_set='3d'):
     T = np.array(h5_file['time'][:])
     Nt = T.size
     
     D = np.array(h5_file['D'][..., :Nz], dtype=np.float32)
-    Dmax = np.max(D)
-    Dmin = np.min(D)
+    Dmin, Dmax = norm_paras['D']
     D = (D-Dmin)/(Dmax-Dmin)
-    norm_paras['D'] = (Dmin, Dmax)
 
     P = np.array(h5_file['P'][..., :Nz], dtype=np.float32)
-    Pmax = np.max(P)
-    Pmin = np.min(P)
+    Pmin, Pmax = norm_paras['P']
     P = (P-Pmin)/(Pmax-Pmin)
-    norm_paras['P'] = (Pmin, Pmax)
 
     U = np.array(h5_file['U'][..., :Nz], dtype=np.float32)
-    Umax = np.max(U)
-    Umin = np.min(U)
+    Umin, Umax = norm_paras['U']
     U = (U-Umin)/(Umax-Umin)
-    norm_paras['U'] = (Umin, Umax)
 
     V = np.array(h5_file['V'][..., :Nz], dtype=np.float32)
-    Vmax = np.max(V)
-    Vmin = np.min(V)
+    Vmin, Vmax = norm_paras['V']
     V = (V-Vmin)/(Vmax-Vmin)
-    norm_paras['V'] = (Vmin, Vmax)
 
     x = np.array(h5_file['x'][:])
-    xmax = np.max(x)
-    xmin = np.min(x)
+    xmin, xmax = norm_paras['x']
     x = (x-xmin)/(xmax-xmin)
-    norm_paras['x'] = (xmin, xmax)
 
     y = np.array(h5_file['y'][:])
-    ymax = np.max(y)
-    ymin = np.min(y)
+    ymin, ymax = norm_paras['y']
     y = (y-ymin)/(ymax-ymin)
-    norm_paras['y'] = (ymin, ymax)
 
     if dim_set == '3d':
         xx = np.tile(np.expand_dims(x, axis=(0,-1)), (Nt,1,1,1))
         yy = np.tile(np.expand_dims(y, axis=(0,-1)), (Nt,1,1,1))
         primes_data = np.concatenate([U, V, D, P, xx, yy], axis=-1)
-        return primes_data, norm_paras, xx[0], yy[0]
+        # primes_data = np.expand_dims(primes_data, axis=0)
+        return primes_data, xx[0], yy[0]
     elif dim_set == '2d':
         xx = np.tile(np.expand_dims(x, axis=(0,-1)), (Nt,1,1,Nz))
         yy = np.tile(np.expand_dims(y, axis=(0,-1)), (Nt,1,1,Nz))
         primes_data = np.stack([U, V, D, P, xx, yy], axis=-1)
         primes_data = jnp.moveaxis(primes_data, -2, 0)
-        return primes_data, norm_paras, xx[0,:,:,:1], yy[0,:,:,:1]
+        return primes_data, xx[0,:,:,:1], yy[0,:,:,:1]
     
-def recover_data(norm_paras, reco_list, norm_data_list):
-    for i in range(len(reco_list)):
-        key = reco_list[i]
+def recover_norm_data(norm_paras, key_list, norm_data_list):
+    data_list = []
+    for i in range(len(key_list)):
+        key = key_list[i]
         datamin, datamax = norm_paras[key]
-        norm_data_list[i] = (datamax-datamin)*norm_data_list[i] + datamin
-    return norm_data_list
+        print(key, datamin, datamax)
+        data_list.append((datamax-datamin)*norm_data_list[i] + datamin)
+    return data_list
+
+def recover_norm_data_woxy(norm_paras, norm_data, Nz=1):
+    '''
+    norm_data: normalized data array with shape [B, H, W, 4*Nz]. the data sequence of norm_data should be [U, V, D, P]
+    Nz: the num. of z levels of the data.
+    '''
+    U, V, D, P = norm_data[...,:Nz], norm_data[...,Nz:2*Nz], norm_data[...,2*Nz:3*Nz], norm_data[...,3*Nz:4*Nz]
+    norm_data_list = [U, V, D, P]
+    key_list = ['U', 'V', 'D', 'P']
+    data = recover_norm_data(norm_paras, key_list, norm_data_list)
+    return jnp.concatenate(data, axis=-1)
+
+def recover_norm_data_wxy(norm_paras, norm_data, Nz=1):
+    '''
+    norm_data: normalized data array with shape [B, H, W, 4*Nz+2]. the data sequence of norm_data should be [U, V, D, P]
+    Nz: the num. of z levels of the data.
+    '''
+    U, V, D, P, xx, yy = norm_data[...,:Nz], norm_data[...,Nz:2*Nz], norm_data[...,2*Nz:3*Nz], norm_data[...,3*Nz:4*Nz]
+    norm_data_list = [U, V, D, P, xx, yy]
+    key_list = ['U', 'V', 'D', 'P', 'x', 'y']
+    data = recover_norm_data(norm_paras, key_list, norm_data_list)
+    return jnp.concatenate(data, axis=-1)
+
+def plot_fig(Z, title, Zmin, Zmax, x_start, x_end, y_start, y_end, save_imag_path):
+    fig, ax = plt.subplots()
+    ax.set_title(title)
+    ax.set_xlabel('Longitude')
+    ax.set_ylabel('Latitude')
+    im = ax.imshow(Z, extent=(x_start,x_end, y_start, y_end), cmap=matplotlib.cm.RdBu, vmin=Zmin, vmax=Zmax)
+    cb = fig.colorbar(im, ax=ax)
+    fig.savefig(save_imag_path, format='eps')
+    plt.show()
+
+def get_max_min(data, Nz):
+    keys = ['U', 'V', 'D', 'P']
+    U = data[...,:Nz]
+    V = data[...,Nz:2*Nz]
+    D = data[...,2*Nz:3*Nz]
+    P = data[...,3*Nz:4*Nz]
+    data_list = [U, V, D, P]
+    for i in range(4):
+        key = keys[i]
+        print(f"The max value of {key} is {np.max(data_list[i])}. The min value of {key} is {np.min(data_list[i])}")
+
+def get_real_rel_err(norm_paras, norm_data_nn, norm_data_true, Nz):
+    data_nn = recover_norm_data_woxy(norm_paras, norm_data_nn, Nz)
+    data_true = recover_norm_data_woxy(norm_paras, norm_data_true, Nz)
+
+    rel_err_sum = 0
+    err_list = []
+    for i in range(4):
+        rel_err = jnp.mean((data_nn[...,i*Nz:(i+1)*Nz]-data_true[...,i*Nz:(i+1)*Nz])**2)/jnp.mean(data_true[...,i*Nz:(i+1)*Nz]**2)
+        print(f"The L2 norm of data_true: {jnp.mean(data_true[...,i*Nz:(i+1)*Nz]**2)}")
+        rel_err_sum +=  rel_err
+        err_list.append(rel_err)
+    return *err_list, rel_err_sum

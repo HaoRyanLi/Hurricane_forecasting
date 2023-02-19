@@ -47,23 +47,30 @@ matplotlib.use('TkAgg')
 path = '/work/09012/haoli1/ls6/hurricane/hurricane_data/high_reso/'
 
 use_trunc_data = False
+use_fori = True
+#! Step : 0 - Generate_data_initilizers
+# ? Training inputs
+dt_scaling = 15*60
+dt = 15*60/dt_scaling
+batch_size_test = 10
+dim_setting = '3d'
 
 #! Step : 0 - Generate_data_initilizers
 # ? Training inputs
-dt = 1
-batch_size_test = 5
 
 # ? Step 0.3 - Spectral method for 2D Navier-Stoke equation initialize parameters
 # initialize physic parameters
-visc = 1e-3
-
-DATASET_PATH = '/work/09012/haoli1/ls6/hurricane/hurricane_data/high_reso/'
-CHECKPOINT_PATH = '/work/09012/haoli1/ls6/hurricane/saved_models/'
-
+rad = np.pi/180
+Omega = 7.2921e-5
 
 Nx_int = 512
 Ny_int = 384
-Nz_int = 2
+Nz_int = 10
+
+if dim_setting == '3d':
+    Nc_dim = Nz_int
+elif dim_setting == '2d':
+    Nc_dim = 1
 
 # Nx_int = 128
 # Ny_int = 96
@@ -73,12 +80,18 @@ Nz_int = 2
 print('=' * 20 + ' >>')
 print('Loading train data ...')
 
+DATASET_PATH = '/work/09012/haoli1/ls6/hurricane/hurricane_data/high_reso/'
 train_file_name = DATASET_PATH+'Nt_313_10x512x384_uvdp_int_2023-02-09.h5'
 hf_data = h5py.File(train_file_name, 'r')
+all_data, norm_paras, xx_norm, yy_norm = utilities.norm_data(hf_data, Nz_int, dim_set=dim_setting)
+# all_data = jax.device_put(all_data)
 
+xx, yy = utilities.recover_norm_data(norm_paras, ['x', 'y'], [xx_norm, yy_norm])
+if use_fori:
+    f_cori = 2*Omega*jnp.sin(yy*rad)
+else:
+    f_cori = np.zeros_like(yy)
 
-all_data, norm_paras, xx, yy = utilities.norm_data(hf_data, Nz_int)
-# all_data = np.random.normal(size=[313,Nx_int,Ny_int,222])
 Nt, Ny, Nx = all_data.shape[:3]
 
 if use_trunc_data:
@@ -110,8 +123,9 @@ print(Test_data.shape)
 
 x = datetime.datetime.now()
 imag_path = '/work/09012/haoli1/ls6/hurricane/figs/'
-CHECKPOINT_PATH = '/work/09012/haoli1/ls6/hurricane/saved_models/2023-02-11/C128_D253_MCa_1e+00_Noise_0.0_relu_N_seq_10_bs_5adam_cosine1e-04'
+CHECKPOINT_PATH = '/work/09012/haoli1/ls6/hurricane/saved_models/2023-02-16/F_Falsedt_1e+00_D253_MCa_1e+00_Noise_0.0_relu_N_seq_5_bs_10adam_constant1e-04'
 
+# CHECKPOINT_PATH = '/work/09012/haoli1/ls6/hurricane/saved_models/2023-02-16/F_Truedt_9e+01_D253_MCa_1e+00_Noise_0.0_relu_N_seq_5_bs_10adam_constant1e-04'
 class TrainState(train_state.TrainState):
     # A simple extension of TrainState to also include batch statistics
     batch_stats: Any
@@ -157,7 +171,7 @@ class TrainerModule:
 
     def upload_wandb(self):
         # Uploading to wandb
-        self.run_name = ('C128_D'+str(num_train)+'_MCa_'+str("%1.0e"%self.train_hparams['mc_u'])+'_Noise_' 
+        self.run_name = ('F_'+str(use_fori)+'dt_'+str("%1.0e"%self.train_hparams['dt'])+'_D'+str(num_train)+'_MCa_'+str("%1.0e"%self.train_hparams['mc_u'])+'_Noise_'
         + str(self.train_hparams['noise_level'])+'_'+self.model_hparams['act_fn_name']+'_N_seq_'+str(self.train_hparams['n_seq'])+'_bs_'
         + str(self.train_hparams['batch_size'])+self.optimizer_name+'_'+self.lr_scheduler_name+str("%1.0e"%self.optimizer_hparams['lr']))
         if self.upload_run:
@@ -192,7 +206,7 @@ class TrainerModule:
         def squential_loss(i, args):
             loss_ml, loss_mc, u_ml, batch_data, params, batch_stats = args
             outs = self.model.apply({'params': params, 'batch_stats': batch_stats}, 
-                                        u_ml, self.train_hparams['dt'], train=True, mutable=['batch_stats'])
+                                    u_ml, self.train_hparams['dt'], train=True, mutable=['batch_stats'])
             u_ml_out, new_model_state = outs
             batch_stats = new_model_state['batch_stats']
 
@@ -211,8 +225,9 @@ class TrainerModule:
             # The machine learning term loss
                 ## calute the mean equared err for one sample, mean for w,u,v and all subsequences.
                 # print(f"the u_ml_next shape {u_ml_next.shape}")
-            loss_ml += jnp.sum(jnp.mean((u_ml_out[:,1:-1,1:-1,:]-batch_data[:,i,1:-1,1:-1,:])**2, axis=(1,2,3)))/self.train_hparams['batch_size']
-            u_ml_next = batch_data[:,i].at[:,1:-1,1:-1,:].set(u_ml_out[:,1:-1,1:-1,:])
+            loss_ml += jnp.mean((u_ml_out[:,1:-1,1:-1]-batch_data[:,i,1:-1,1:-1,:-2])**2)
+            u_ml_next = batch_data[:,i].at[:,1:-1,1:-1,:-2].set(u_ml_out[:,1:-1,1:-1])
+            print(f"The shape of u_ml_next: {u_ml_next.shape}")
                 # loss_ml = 0
                 # print(f"the div shape {U_net.div_free_loss(u_ml_next, axis=(1,2)).shape}")
                 # loss_mc_rho += jnp.sum(U_net.div_free_loss(u_ml_next, axis=(1,2)))*self.train_hparams['scaling']/self.train_hparams['batch_size']
@@ -261,11 +276,11 @@ class TrainerModule:
         def forward_map(i, args):
             u, state, test_data = args
             u_ml_out = self.model.apply({'params': state.params, 'batch_stats': state.batch_stats}, u, self.train_hparams['dt'], train=False)
-            u = test_data[i].at[:,1:-1,1:-1,:].set(u_ml_out[:,1:-1,1:-1,:])
+            u = test_data[:,i].at[:,1:-1,1:-1,:-2].set(u_ml_out[:,1:-1,1:-1,:])
             return u, state, test_data
 
         def neural_solver(state, test_data, Nt_test):
-            # the shape of test_data: [T, B, H, W, C]
+            # the shape of test_data: [B, T, H, W, C]
             u = test_data[:, 0]
             u, _, _ = lax.fori_loop(1, Nt_test, forward_map, (u, state, test_data))
             return u
@@ -277,16 +292,15 @@ class TrainerModule:
             test_data = test_data[:num_test].reshape((batch_size_test, Nt_test, H, W, C))
             print(f"The shape of test data: {test_data.shape}")
             u_pred = neural_solver(state, test_data, Nt_test)
-            return jnp.mean((u_pred - test_data[-1])**2)/jnp.mean(test_data[-1]**2)
-        
+            u_true = test_data[:,-1]
+            return jnp.mean((u_pred[...,:-2] - u_true[...,:-2])**2)/jnp.mean(u_true[...,:-2]**2)
+
         self.neural_solver = neural_solver
         self.eval_model = jax.jit(eval_model, static_argnames=['n_start', 'n_end'])
-        self.train_epoch = jax.jit(train_epoch)
+        self.train_epoch = train_epoch
 
     def init_model(self, exmp_inputs):
         # Initialize model
-        if self.with_train_data:
-            self.train_data = Train_data
         init_rng, self.main_rng = jax.random.split(self.main_rng)
         variables = self.model.init(init_rng, exmp_inputs, self.train_hparams['dt'], train=True)
         self.init_params, self.init_batch_stats = variables['params'], variables['batch_stats']
@@ -305,12 +319,10 @@ class TrainerModule:
             assert False, f'Unknown optimizer "{opt_class}"'
         # We decrease the learning rate by a factor of 0.1 after 60% and 85% of the training
         init_value=self.optimizer_hparams.pop('lr')
+        total_steps = num_epochs*(self.num_steps_per_epoch + 1)
         if self.lr_scheduler_name == 'constant':
-            lr_schedule = optax.piecewise_constant_schedule(
-                init_value=init_value,boundaries_and_scales={int(self.num_steps_per_epoch*num_epochs*0.6): 0.1,
-                                                            int(self.num_steps_per_epoch*num_epochs*0.85): 0.1})
+            lr_schedule = optax.piecewise_constant_schedule(init_value=init_value,boundaries_and_scales={int(total_steps*0.6): 0.1, int(total_steps*0.85): 0.1})
         elif self.lr_scheduler_name == 'cosine':
-            total_steps = num_epochs*self.num_steps_per_epoch + num_epochs
             lr_schedule = optax.warmup_cosine_decay_schedule(init_value=init_value, peak_value=10*init_value,warmup_steps=int(total_steps*0.2),
                                                             decay_steps=total_steps, end_value=init_value*1e-1)
         # Clip gradients at max value, and evt. apply weight decay
@@ -325,7 +337,8 @@ class TrainerModule:
                                        train_hparams=self.train_hparams,
                                        tx=optimizer)
 
-    def train_model(self, test_data, num_epochs=1000):
+    def train_model(self, train_data, test_data, num_epochs=1000):
+        self.train_data = train_data
         self.num_steps_per_epoch = (self.train_data.shape[0]-self.train_hparams['n_seq']+1)//self.train_hparams['batch_size']
         self.init_optimizer(num_epochs)
         err_test_min = 1e4
@@ -353,9 +366,8 @@ class TrainerModule:
                                                                    'train_hparams': self.train_hparams}, step=step, overwrite=True)
         
     def load_model(self, pretrained=False):
-        # Load model. We use different checkpoint for pretrained models
         if not pretrained:
-            # Load a specific model. Usually for test and plot.
+        # Load a specific model. Usually for test and plot.
             state_dict = checkpoints.restore_checkpoint(ckpt_dir=self.log_dir, target=None)
         else:
             # Load a model the same as current setting. Usually for continu training.
@@ -382,10 +394,10 @@ class TrainerModule:
 
 trainer = TrainerModule(model_name="UNet", model_class=U_net.UNet,
                         model_hparams={"act_fn": nn.relu, "act_fn_name": 'relu',  "padding": "REPLICATE", "block_size": (16, 32, 64, 128, 128, 128, 128), 
-                        "out_features": Train_data.shape[-1], "model_type": "U_net_modified"}, 
+                        "out_features": Train_data.shape[-1]-2, "model_type": "U_net_modified", "f_cori":f_cori, "Nc_uv":Nc_dim}, 
                         optimizer_name="adam", lr_scheduler_name="cosine", optimizer_hparams={"lr": 1e-4,"weight_decay": 1e-4},
                         exmp_inputs=jax.device_put(Train_data[:1]),
-                        train_hparams={'batch_size':10, 'n_seq':5, 'mc_u':1, 'dt':dt, 'noise_level':0.0, 'scaling': 1},
+                        train_hparams={'batch_size':10, 'n_seq':5, 'mc_u':1.0, 'dt':dt, 'noise_level':0.0},
                         upload_run=False)
 
 print("loading pre-trained model")
@@ -398,76 +410,75 @@ batch_size_test = 1
 Nt_test = 20
 N, H, W, C = test_data.shape
 num_test = (Nt_test+1) * batch_size_test
-test_data = test_data[:num_test].reshape((batch_size_test, Nt_test, H, W, C))
+test_data = test_data[:num_test].reshape((batch_size_test, Nt_test+1, H, W, C))
 print(f"The shape of test data: {test_data.shape}")
+nn_sol_all = trainer.neural_solver(trainer.state, test_data, Nt_test+1)[0]
 
-
-var2ind = {'U':0, 'V':Nz_int, 'D':2*Nz_int, 'P':3*Nz_int}
+level = 9
+var2ind = {'U':0+level, 'V':Nz_int+level, 'D':2*Nz_int+level, 'P':3*Nz_int+level}
 var = 'P'
 
-init = test_data[0,0,:,:,var2ind[var]]
-init = utilities.recover_data(norm_paras, [var], [init])[0]
+# init = test_data[0,0,:,:,var2ind[var]]
+# init = utilities.recover_data(norm_paras, [var], [init])[0]
 
-nn_sol = trainer.neural_solver(trainer.state, test_data, Nt_test+1)
-nn_sol = nn_sol[0,:,:,var2ind[var]]
+# ## to slice the NN predicted solution
+# nn_sol = nn_sol_all[...,var2ind[var]]
+# nn_sol = utilities.recover_data(norm_paras, [var], [nn_sol])[0]
+# print(f"The shape of NN solution: {nn_sol.shape}")
 
-nn_sol = utilities.recover_data(norm_paras, [var], [nn_sol])[0]
-print(f"The shape of NN solution: {nn_sol.shape}")
+## to slice the true solution
+true_sol_all = test_data[0,Nt_test]
+# true_sol = true_sol_all[...,var2ind[var]]
+# true_sol = utilities.recover_data(norm_paras, [var], [true_sol])[0]
+# print(f"The shape of true solution: {true_sol.shape}")
 
-true_sol = test_data[Nt_test,0,:,:,var2ind[var]]
-true_sol = utilities.recover_data(norm_paras, [var], [true_sol])[0]
-print(f"The shape of true solution: {true_sol.shape}")
-print(trainer.train_hparams['dt'])
+print(f"dt: {trainer.train_hparams['dt']}")
 
-# num_epochs=2000
-# print(f"training new model, the num of training epochs is {num_epochs}")
-# trainer.train_model(Test_data, num_epochs=num_epochs)
+keys = ['U', 'V', 'D', 'P']
+
+norm_U_nn = nn_sol_all[...,:Nz_int]
+norm_V_nn = nn_sol_all[...,Nz_int:2*Nz_int]
+norm_D_nn = nn_sol_all[...,2*Nz_int:3*Nz_int]
+norm_P_nn = nn_sol_all[...,3*Nz_int:4*Nz_int]
+norm_data_nn = [norm_U_nn, norm_V_nn, norm_D_nn, norm_P_nn]
+
+norm_U_true = true_sol_all[...,:Nz_int]
+norm_V_true = true_sol_all[...,Nz_int:2*Nz_int]
+norm_D_true = true_sol_all[...,2*Nz_int:3*Nz_int]
+norm_P_true = true_sol_all[...,3*Nz_int:4*Nz_int]
+norm_data_true = [norm_U_true, norm_V_true, norm_D_true, norm_P_true]
 
 
-Z0 = init
-Z0min = Z0.min()
-Z0max = abs(Z0).max()
+utilities.get_max_min(true_sol_all, Nz_int)
 
-fig, ax = plt.subplots()
-ax.set_title("Initial Pressure at T=0")
-ax.set_xlabel('Longitude')
-ax.set_ylabel('Latitude')
-im = ax.imshow(Z0, extent=(x_start,x_end,y_start, y_end), cmap=matplotlib.cm.RdBu, vmin=Z0min, vmax=Z0max)
-im.set_interpolation('bilinear')
-cb = fig.colorbar(im, ax=ax)
-fig.savefig(imag_path+'init.eps', format='eps')
-plt.show()
+for i in range(4):
+    key = keys[i]
+    err = jnp.mean((norm_data_true[i]-norm_data_nn[i])**2)
+    rel_err = err/jnp.mean(norm_data_true[i]**2)
+    print(f"The err and relative error of normed {key} is {err} and {rel_err}, the max value is {np.max(norm_data_true[i])}, the min value is {np.min(norm_data_true[i])}")
 
-Z = nn_sol
-fig, ax = plt.subplots()
-ax.set_title("Predicted Pressure at T=5hrs")
-ax.set_xlabel('Longitude')
-ax.set_ylabel('Latitude')
-im = ax.imshow(Z, extent=(x_start,x_end, y_start, y_end), cmap=matplotlib.cm.RdBu, vmin=Z0min, vmax=Z0max)
-cb = fig.colorbar(im, ax=ax)
-fig.savefig(imag_path+'nn_sol_5hr.eps', format='eps')
-plt.show()
+U_nn, V_nn, D_nn, P_nn = utilities.recover_norm_data(norm_paras, keys, norm_data_nn)
+data_nn = [U_nn, V_nn, D_nn, P_nn]
+U_true, V_true, D_true, P_true = utilities.recover_norm_data(norm_paras, keys, norm_data_true)
+data_true = [U_true, V_true, D_true, P_true]
 
-Z = true_sol
-fig, ax = plt.subplots()
-ax.set_title("True Pressure at T=5hrs")
-ax.set_xlabel('Longitude')
-ax.set_ylabel('Latitude')
-im = ax.imshow(Z, extent=(x_start,x_end, y_start, y_end), cmap=matplotlib.cm.RdBu, vmin=Z0min, vmax=Z0max)
-im.set_interpolation('bilinear')
-cb = fig.colorbar(im, ax=ax)
-fig.savefig(imag_path+'true_sol_5hr.eps', format='eps')
-plt.show()
+for i in range(4):
+    key = keys[i]
+    rel_err = jnp.mean((data_true[i]-data_nn[i])**2)/jnp.mean(data_true[i]**2)
+    print(f"The relative error of real {key} is {rel_err}, the max value is {np.max(data_nn[i])}, the min value is {np.min(data_nn[i])}")
 
-fig, ax = plt.subplots()
-Z = nn_sol-true_sol
-ax.set_title("Pressure error at T=5hrs")
-ax.set_xlabel('Longitude')
-ax.set_ylabel('Latitude')
-im = ax.imshow(Z, extent=(x_start,x_end,y_start, y_end), cmap=matplotlib.cm.RdBu, vmin=Z.min(), vmax=abs(Z).max())
-im.set_interpolation('bilinear')
-cb = fig.colorbar(im, ax=ax)
-fig.savefig(imag_path+'err_5hr.eps', format='eps')
-plt.show()
+print(jnp.mean((nn_sol_all-true_sol_all)**2)/jnp.mean(true_sol_all**2))
 
-print(jnp.mean((nn_sol-true_sol)**2)/jnp.mean(true_sol**2))
+# Z0min = init.min()
+# Z0max = abs(init).max()
+
+# utilities.plot_fig(init, f"True {var} at T={0}hrs", Z0min, Z0max, x_start, x_end, y_start, y_end, imag_path+'init.eps')
+
+# utilities.plot_fig(nn_sol, f"Predicted {var} at T={Nt_test/4}hrs", Z0min, Z0max, x_start, x_end, y_start, y_end, imag_path+'nn_sol_5hr.eps')
+
+# utilities.plot_fig(true_sol, f"True {var} at T={Nt_test/4}hrs", Z0min, Z0max, x_start, x_end, y_start, y_end, imag_path+'true_sol_5hr.eps')
+
+# err = nn_sol-true_sol
+# err_min=err.min()
+# err_max=abs(err).max()
+# utilities.plot_fig(err, f"{var} error at T={Nt_test/4}hrs", err_min, err_max, x_start, x_end, y_start, y_end, imag_path+'err_5hr.eps')
