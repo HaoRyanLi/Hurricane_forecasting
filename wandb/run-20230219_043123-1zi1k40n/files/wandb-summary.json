@@ -1,1 +1,0 @@
-{"Total loss": 0.03811853751540184, "ML loss": 0.03811853751540184, "MC loss": 0.0, "Test Error": null, "TEST MIN": 10000.0, "U Err": 0.0007385170902125537, "V Err": null, "D Err": null, "P Err": null, "Learning Rate": 9.999999974752427e-07, "_timestamp": 1676803000.3578446, "_runtime": 316.999178647995, "_step": 19, "_wandb": {"runtime": 316}}

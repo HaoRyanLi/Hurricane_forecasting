@@ -34,14 +34,9 @@ batch_size_test =5
 Nx_int = 512
 Ny_int = 384
 Nz_int = 10
-
 scal_factor = 100
-scal_vec = np.concatenate([scal_factor*np.ones(Nz_int), scal_factor*np.ones(Nz_int), np.ones(Nz_int), np.ones(Nz_int)])
-scal_vec = scal_vec/np.sqrt(np.sum(scal_vec**2))
-print(f"The norm of scal_vec is {np.dot(scal_vec, scal_vec)}")
 
-# ? Step 0.3 - Spectral method for 2D Navier-Stoke equation initialize parameters
-# initialize physic parameters
+
 rad = np.pi/180
 Omega = 7.2921e-5
 DATASET_PATH = '/work/09012/haoli1/ls6/hurricane/hurricane_data/high_reso/'
@@ -54,6 +49,11 @@ if dim_setting == '3d':
 elif dim_setting == '2d':
     Num_level = Nz_int
     Nc_dim = 1
+
+
+scal_vec = np.concatenate([scal_factor*np.ones(Nc_dim), scal_factor*np.ones(Nc_dim), np.ones(Nc_dim), np.ones(Nc_dim)])
+scal_vec = scal_vec/np.sqrt(np.sum(scal_vec**2))
+print(f"The norm of scal_vec is {np.dot(scal_vec, scal_vec)}")
 
 train_file_name = DATASET_PATH+'Nt_313_10x512x384_uvdp_int_2023-02-09.h5'
 

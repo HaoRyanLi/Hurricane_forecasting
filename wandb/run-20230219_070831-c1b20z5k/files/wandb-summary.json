@@ -1,1 +1,0 @@
-{"Total Loss": 0.018245277926325798, "Test Error": Infinity, "TEST MIN": 5.3198089599609375, "U Err": 2.5029960452659786e+24, "V Err": 1.1197815599435463e+26, "D Err": 8.246967426289256e+25, "P Err": Infinity, "_timestamp": 1676812894.7097127, "_runtime": 783.6459636688232, "_step": 6, "_wandb": {"runtime": 834}}

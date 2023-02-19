@@ -1,7 +1,0 @@
-training new model, the num of training epochs is 2000
-the shape of batch_data: (14, 384, 512, 10)
-the shape of batch_data after transformation (10, 5, 384, 512, 10)
-Adding noise to data with noise level 0.01
-  0%|                                                                                                                                                   | 0/2000 [00:00<?, ?it/s]
-the shape of batch_data: (14, 384, 512, 10)
-the shape of batch_data after transformation (10, 5, 384, 512, 10)
