@@ -1,0 +1,211 @@
+[34m[1mwandb[39m[22m: [33mWARNING[39m Serializing object of type ndarray that is 786576 bytes
+  0%|                                                                                                                                            | 0/20 [00:00<?, ?it/s]
+training new model, the num of training epochs is 20
+The num of num_steps_per_level 49
+The num of num_steps_per_epoch 49
+the shape of batch_data: (9, 384, 512, 42)
+the shape of batch_data after transformation (5, 5, 384, 512, 42)
+The shape of input: (5, 384, 512, 42)
+  0%|                                                                                                                                            | 0/20 [01:28<?, ?it/s]
+Traceback (most recent call last):
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_3d0.0.py", line 112, in <module>
+    trainer.train_model(Train_data, Test_data, num_epochs=num_epochs)
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod.py", line 245, in train_model
+    loss, loss_ml, loss_mc = self.train_epoch(train_data)
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod.py", line 227, in train_epoch
+    self.state, loss, loss_ml, loss_mc, self.main_rng = self.train_step(self.state, batch, self.main_rng)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/api.py", line 621, in cache_miss
+    out_flat = call_bind_continuation(execute(*args_flat))
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/dispatch.py", line 895, in _execute_compiled
+    out_flat = compiled.execute(in_flat)
+jax._src.traceback_util.UnfilteredStackTrace: jaxlib.xla_extension.XlaRuntimeError: RESOURCE_EXHAUSTED: Out of memory while trying to allocate 11086750832 bytes.
+BufferAssignment OOM Debugging.
+BufferAssignment stats:
+             parameter allocation:  375.03MiB
+              constant allocation:        33B
+        maybe_live_out allocation:   91.53MiB
+     preallocated temp allocation:   10.33GiB
+                 total allocation:   10.78GiB
+Peak buffers:
+	Buffer 1:
+		Size: 787.50MiB
+		Operator: op_name="jit(train_step)/jit(main)/gather[dimension_numbers=GatherDimensionNumbers(offset_dims=(2, 3, 4), collapsed_slice_dims=(0,), start_index_map=(0,)) slice_sizes=(1, 384, 512, 42) unique_indices=False indices_are_sorted=False mode=GatherScatterMode.PROMISE_IN_BOUNDS fill_value=None]" source_file="/work/09012/haoli1/ls6/hurricane/code/Train_mod.py" source_line=101
+		XLA Label: fusion
+		Shape: f32[5,5,384,512,42]
+		==========================
+	Buffer 2:
+		Size: 635.75MiB
+		Operator: op_name="jit(train_step)/jit(main)/broadcast_in_dim[shape=(4, 5, 386, 514, 42) broadcast_dimensions=()]" source_file="/work/09012/haoli1/ls6/hurricane/code/Train_mod.py" source_line=149
+		XLA Label: fusion
+		Shape: f32[4,5,386,514,42]
+		==========================
+	Buffer 3:
+		Size: 594.54MiB
+		Operator: op_name="jit(train_step)/jit(main)/broadcast_in_dim[shape=(4, 5, 382, 510, 40) broadcast_dimensions=()]" source_file="/work/09012/haoli1/ls6/hurricane/code/Train_mod.py" source_line=149
+		XLA Label: fusion
+		Shape: f32[4,5,382,510,40]
+		==========================
+	Buffer 4:
+		Size: 484.38MiB
+		XLA Label: copy
+		Shape: f32[4,5,386,514,32]
+		==========================
+	Buffer 5:
+		Size: 484.38MiB
+		Operator: op_name="jit(train_step)/jit(main)/broadcast_in_dim[shape=(4, 5, 386, 514, 32) broadcast_dimensions=()]" source_file="/work/09012/haoli1/ls6/hurricane/code/Train_mod.py" source_line=149
+		XLA Label: fusion
+		Shape: f32[4,5,386,514,32]
+		==========================
+	Buffer 6:
+		Size: 283.50MiB
+		Entry Parameter Subshape: f32[9,384,512,42]
+		==========================
+	Buffer 7:
+		Size: 244.39MiB
+		XLA Label: copy
+		Shape: f32[4,5,194,258,64]
+		==========================
+	Buffer 8:
+		Size: 244.39MiB
+		Operator: op_name="jit(train_step)/jit(main)/broadcast_in_dim[shape=(4, 5, 194, 258, 64) broadcast_dimensions=()]" source_file="/work/09012/haoli1/ls6/hurricane/code/Train_mod.py" source_line=149
+		XLA Label: fusion
+		Shape: f32[4,5,194,258,64]
+		==========================
+	Buffer 9:
+		Size: 242.19MiB
+		XLA Label: copy
+		Shape: f32[4,5,386,514,16]
+		==========================
+	Buffer 10:
+		Size: 242.19MiB
+		XLA Label: copy
+		Shape: f32[4,5,386,514,16]
+		==========================
+	Buffer 11:
+		Size: 242.19MiB
+		Operator: op_name="jit(train_step)/jit(main)/broadcast_in_dim[shape=(4, 5, 386, 514, 16) broadcast_dimensions=()]" source_file="/work/09012/haoli1/ls6/hurricane/code/Train_mod.py" source_line=149
+		XLA Label: fusion
+		Shape: f32[4,5,386,514,16]
+		==========================
+	Buffer 12:
+		Size: 240.00MiB
+		XLA Label: copy
+		Shape: f32[4,5,384,512,16]
+		==========================
+	Buffer 13:
+		Size: 240.00MiB
+		XLA Label: copy
+		Shape: f32[4,5,384,512,16]
+		==========================
+	Buffer 14:
+		Size: 240.00MiB
+		XLA Label: copy
+		Shape: f32[4,5,384,512,16]
+		==========================
+	Buffer 15:
+		Size: 240.00MiB
+		XLA Label: copy
+		Shape: f32[4,5,384,512,16]
+		==========================
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_3d0.0.py", line 112, in <module>
+    trainer.train_model(Train_data, Test_data, num_epochs=num_epochs)
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod.py", line 245, in train_model
+    loss, loss_ml, loss_mc = self.train_epoch(train_data)
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod.py", line 227, in train_epoch
+    self.state, loss, loss_ml, loss_mc, self.main_rng = self.train_step(self.state, batch, self.main_rng)
+jaxlib.xla_extension.XlaRuntimeError: RESOURCE_EXHAUSTED: Out of memory while trying to allocate 11086750832 bytes.
+BufferAssignment OOM Debugging.
+BufferAssignment stats:
+             parameter allocation:  375.03MiB
+              constant allocation:        33B
+        maybe_live_out allocation:   91.53MiB
+     preallocated temp allocation:   10.33GiB
+                 total allocation:   10.78GiB
+Peak buffers:
+	Buffer 1:
+		Size: 787.50MiB
+		Operator: op_name="jit(train_step)/jit(main)/gather[dimension_numbers=GatherDimensionNumbers(offset_dims=(2, 3, 4), collapsed_slice_dims=(0,), start_index_map=(0,)) slice_sizes=(1, 384, 512, 42) unique_indices=False indices_are_sorted=False mode=GatherScatterMode.PROMISE_IN_BOUNDS fill_value=None]" source_file="/work/09012/haoli1/ls6/hurricane/code/Train_mod.py" source_line=101
+		XLA Label: fusion
+		Shape: f32[5,5,384,512,42]
+		==========================
+	Buffer 2:
+		Size: 635.75MiB
+		Operator: op_name="jit(train_step)/jit(main)/broadcast_in_dim[shape=(4, 5, 386, 514, 42) broadcast_dimensions=()]" source_file="/work/09012/haoli1/ls6/hurricane/code/Train_mod.py" source_line=149
+		XLA Label: fusion
+		Shape: f32[4,5,386,514,42]
+		==========================
+	Buffer 3:
+		Size: 594.54MiB
+		Operator: op_name="jit(train_step)/jit(main)/broadcast_in_dim[shape=(4, 5, 382, 510, 40) broadcast_dimensions=()]" source_file="/work/09012/haoli1/ls6/hurricane/code/Train_mod.py" source_line=149
+		XLA Label: fusion
+		Shape: f32[4,5,382,510,40]
+		==========================
+	Buffer 4:
+		Size: 484.38MiB
+		XLA Label: copy
+		Shape: f32[4,5,386,514,32]
+		==========================
+	Buffer 5:
+		Size: 484.38MiB
+		Operator: op_name="jit(train_step)/jit(main)/broadcast_in_dim[shape=(4, 5, 386, 514, 32) broadcast_dimensions=()]" source_file="/work/09012/haoli1/ls6/hurricane/code/Train_mod.py" source_line=149
+		XLA Label: fusion
+		Shape: f32[4,5,386,514,32]
+		==========================
+	Buffer 6:
+		Size: 283.50MiB
+		Entry Parameter Subshape: f32[9,384,512,42]
+		==========================
+	Buffer 7:
+		Size: 244.39MiB
+		XLA Label: copy
+		Shape: f32[4,5,194,258,64]
+		==========================
+	Buffer 8:
+		Size: 244.39MiB
+		Operator: op_name="jit(train_step)/jit(main)/broadcast_in_dim[shape=(4, 5, 194, 258, 64) broadcast_dimensions=()]" source_file="/work/09012/haoli1/ls6/hurricane/code/Train_mod.py" source_line=149
+		XLA Label: fusion
+		Shape: f32[4,5,194,258,64]
+		==========================
+	Buffer 9:
+		Size: 242.19MiB
+		XLA Label: copy
+		Shape: f32[4,5,386,514,16]
+		==========================
+	Buffer 10:
+		Size: 242.19MiB
+		XLA Label: copy
+		Shape: f32[4,5,386,514,16]
+		==========================
+	Buffer 11:
+		Size: 242.19MiB
+		Operator: op_name="jit(train_step)/jit(main)/broadcast_in_dim[shape=(4, 5, 386, 514, 16) broadcast_dimensions=()]" source_file="/work/09012/haoli1/ls6/hurricane/code/Train_mod.py" source_line=149
+		XLA Label: fusion
+		Shape: f32[4,5,386,514,16]
+		==========================
+	Buffer 12:
+		Size: 240.00MiB
+		XLA Label: copy
+		Shape: f32[4,5,384,512,16]
+		==========================
+	Buffer 13:
+		Size: 240.00MiB
+		XLA Label: copy
+		Shape: f32[4,5,384,512,16]
+		==========================
+	Buffer 14:
+		Size: 240.00MiB
+		XLA Label: copy
+		Shape: f32[4,5,384,512,16]
+		==========================
+	Buffer 15:
+		Size: 240.00MiB
+		XLA Label: copy
+		Shape: f32[4,5,384,512,16]
+		==========================

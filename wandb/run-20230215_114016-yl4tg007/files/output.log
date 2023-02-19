@@ -1,0 +1,6 @@
+
+training new model, the num of training epochs is 5
+Traceback (most recent call last):
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py", line 383, in <module>
+    trainer.train_model(Train_data, Test_data, num_epochs=num_epochs)
+TypeError: train_model() missing 1 required positional argument: 'test_data'

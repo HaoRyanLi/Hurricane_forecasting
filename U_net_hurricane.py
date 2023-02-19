@@ -263,11 +263,10 @@ class UNet(nn.Module):
     @nn.compact
     def __call__(self, x: jnp.ndarray, dt, train: bool) -> jnp.ndarray:
         x_input = x
-        print(f"The shape of input: {x.shape}")
+        # print(f"The shape of input: {x.shape}")
         B, H, W, C = x.shape
         f_cori = jnp.tile(self.f_cori, (B, 1, 1, self.Nc_uv))
         f_cori_uv = jnp.concatenate((f_cori, -f_cori), axis=-1)
-        print(f"The shape of x_input {x.shape} and the shape of f_cori_uv {f_cori_uv.shape}")
         x_input = jnp.concatenate((x_input[...,:2*self.Nc_uv]*(1+dt*f_cori_uv), x_input[...,2*self.Nc_uv:]), axis=-1)
         skip_connections = []
         for i, features in enumerate(self.block_size):

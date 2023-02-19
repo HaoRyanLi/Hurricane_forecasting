@@ -1,0 +1,27 @@
+training new model, the num of training epochs is 5
+The num of num_steps_per_level 59
+The num of num_steps_per_epoch 590
+the shape of batch_data: (9, 384, 512, 6)
+the shape of batch_data after transformation (5, 5, 384, 512, 6)
+The shape of input: (5, 384, 512, 6)
+  0%|                                                                                                                                                                    | 0/5 [00:00<?, ?it/s]
+The shape of input: (5, 384, 512, 6)
+the shape of batch_data: (9, 384, 512, 6)
+  0%|                                                                                                                                                                    | 0/5 [01:41<?, ?it/s]
+Traceback (most recent call last):
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_2d0.0.py", line 390, in <module>
+    trainer.train_model(Train_data, Test_data, num_epochs=num_epochs)
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_2d0.0.py", line 340, in train_model
+    loss, loss_ml, loss_mc, self.state, self.main_rng = self.train_epoch(self.state, self.main_rng)
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_2d0.0.py", line 253, in train_epoch
+    loss, loss_ml, loss_mc, state, main_rng = lax.fori_loop(0, self.num_steps_per_epoch, train_step, (loss, loss_ml, loss_mc, state, main_rng))
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 1691, in fori_loop
+    (_, result), _ = scan(_fori_scan_body_fun(body_fun), (lower_, init_val),
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 274, in scan
+    out = scan_p.bind(*consts, *in_flat,
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/jax/_src/lax/control_flow/loops.py", line 999, in scan_bind
+    return core.AxisPrimitive.bind(scan_p, *args, **params)

@@ -1,0 +1,14 @@
+
+[34m[1mwandb[39m[22m: [33mWARNING[39m Serializing object of type ndarray that is 786576 bytes
+training new model, the num of training epochs is 3
+The num of num_steps_per_level 24
+The num of num_steps_per_epoch 240
+  0%|                                                                                                                                             | 0/3 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_2d0.0.py", line 111, in <module>
+    trainer.train_model(Train_data, Test_data, num_epochs=num_epochs)
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod_2d.py", line 245, in train_model
+    loss, loss_ml, loss_mc = self.train_epoch(train_data)
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod_2d.py", line 227, in train_epoch
+    loss, loss_ml, loss_mc, self.state, self.main_rng = self.train_step(self.state, batch, self.main_rng)
+AttributeError: 'TrainerModule' object has no attribute 'train_step'

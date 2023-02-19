@@ -1,0 +1,44 @@
+2023-02-15 23:15:30,702 INFO    MainThread:2901863 [wandb_setup.py:_flush():68] Configure stats pid to 2901863
+2023-02-15 23:15:30,703 INFO    MainThread:2901863 [wandb_setup.py:_flush():68] Loading settings from /home1/09012/haoli1/.config/wandb/settings
+2023-02-15 23:15:30,704 INFO    MainThread:2901863 [wandb_setup.py:_flush():68] Loading settings from /work/09012/haoli1/ls6/hurricane/code/wandb/settings
+2023-02-15 23:15:30,704 INFO    MainThread:2901863 [wandb_setup.py:_flush():68] Loading settings from environment variables: {'_require_service': 'True'}
+2023-02-15 23:15:30,704 INFO    MainThread:2901863 [wandb_setup.py:_flush():68] Inferring run settings from compute environment: {'program_relpath': 'hurr_u_net_0.0.py', 'program': '/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_0.0.py'}
+2023-02-15 23:15:30,704 INFO    MainThread:2901863 [wandb_init.py:_log_setup():476] Logging user logs to /work/09012/haoli1/ls6/hurricane/code/wandb/run-20230215_231530-2reiscdn/logs/debug.log
+2023-02-15 23:15:30,704 INFO    MainThread:2901863 [wandb_init.py:_log_setup():477] Logging internal logs to /work/09012/haoli1/ls6/hurricane/code/wandb/run-20230215_231530-2reiscdn/logs/debug-internal.log
+2023-02-15 23:15:30,704 INFO    MainThread:2901863 [wandb_init.py:init():516] calling init triggers
+2023-02-15 23:15:30,704 INFO    MainThread:2901863 [wandb_init.py:init():519] wandb.init called with sweep_config: {}
+config: {}
+2023-02-15 23:15:30,704 INFO    MainThread:2901863 [wandb_init.py:init():569] starting backend
+2023-02-15 23:15:30,704 INFO    MainThread:2901863 [wandb_init.py:init():573] setting up manager
+2023-02-15 23:15:30,707 INFO    MainThread:2901863 [backend.py:_multiprocessing_setup():102] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2023-02-15 23:15:30,709 INFO    MainThread:2901863 [wandb_init.py:init():580] backend started and connected
+2023-02-15 23:15:30,712 INFO    MainThread:2901863 [wandb_init.py:init():658] updated telemetry
+2023-02-15 23:15:30,775 INFO    MainThread:2901863 [wandb_init.py:init():693] communicating run to backend with 60 second timeout
+2023-02-15 23:15:31,092 INFO    MainThread:2901863 [wandb_run.py:_on_init():2006] communicating current version
+2023-02-15 23:15:31,146 INFO    MainThread:2901863 [wandb_run.py:_on_init():2010] got version response upgrade_message: "wandb version 0.13.10 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2023-02-15 23:15:31,146 INFO    MainThread:2901863 [wandb_init.py:init():728] starting run threads in backend
+2023-02-15 23:15:31,320 INFO    MainThread:2901863 [wandb_run.py:_console_start():1986] atexit reg
+2023-02-15 23:15:31,320 INFO    MainThread:2901863 [wandb_run.py:_redirect():1844] redirect: SettingsConsole.WRAP_RAW
+2023-02-15 23:15:31,320 INFO    MainThread:2901863 [wandb_run.py:_redirect():1909] Wrapping output streams.
+2023-02-15 23:15:31,320 INFO    MainThread:2901863 [wandb_run.py:_redirect():1931] Redirects installed.
+2023-02-15 23:15:31,321 INFO    MainThread:2901863 [wandb_init.py:init():765] run started, returning control to user process
+2023-02-15 23:15:31,321 INFO    MainThread:2901863 [wandb_config.py:__setitem__():155] config set model_name = UNet - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14522c12ab20>>
+2023-02-15 23:15:31,321 INFO    MainThread:2901863 [wandb_run.py:_config_callback():1163] config_cb model_name UNet None
+2023-02-15 23:15:31,324 INFO    MainThread:2901863 [wandb_config.py:__setitem__():155] config set model_hparams = {'act_fn': 'jax._src.nn.functions.relu', 'act_fn_name': 'relu', 'padding': 'REPLICATE', 'block_size': [16, 32, 64, 128, 128, 128, 128], 'out_features': 40, 'model_type': 'U_net_modified', 'f_cori': '[[[5.7696554e-05]\n  [5.7696554e-05]\n  [5.7696554e-05]\n  ...\n  [5.7696554e-05]\n  [5.7696554e-05]\n  [5.7696554e-05]]\n\n [[5.7741941e-05]\n  [5.7741941e-05]\n  [5.7741941e-05]\n  ...\n  [5.7741941e-05]\n  [5.7741941e-05]\n  [5.7741941e-05]]\n\n [[5.7787325e-05]\n  [5.7787325e-05]\n  [5.7787325e-05]\n  ...\n  [5.7787325e-05]\n  [5.7787325e-05]\n  [5.7787325e-05]]\n\n ...\n\n [[7.4462747e-05]\n  [7.4462747e-05]\n  [7.4462747e-05]\n  ...\n  [7.4462747e-05]\n  [7.4462747e-05]\n  [7.4462747e-05]]\n\n [[7.4505238e-05]\n  [7.4505238e-05]\n  [7.4505238e-05]\n  ...\n  [7.4505238e-05]\n  [7.4505238e-05]\n  [7.4505238e-05]]\n\n [[7.4547730e-05]\n  [7.4547730e-05]\n  [7.4547730e-05]\n  ...\n  [7.4547730e-05]\n  [7.4547730e-05]\n  [7.4547730e-05]]]', 'Nc_uv': 10} - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14522c12ab20>>
+2023-02-15 23:15:31,324 INFO    MainThread:2901863 [wandb_run.py:_config_callback():1163] config_cb model_hparams {'act_fn': 'jax._src.nn.functions.relu', 'act_fn_name': 'relu', 'padding': 'REPLICATE', 'block_size': [16, 32, 64, 128, 128, 128, 128], 'out_features': 40, 'model_type': 'U_net_modified', 'f_cori': '[[[5.7696554e-05]\n  [5.7696554e-05]\n  [5.7696554e-05]\n  ...\n  [5.7696554e-05]\n  [5.7696554e-05]\n  [5.7696554e-05]]\n\n [[5.7741941e-05]\n  [5.7741941e-05]\n  [5.7741941e-05]\n  ...\n  [5.7741941e-05]\n  [5.7741941e-05]\n  [5.7741941e-05]]\n\n [[5.7787325e-05]\n  [5.7787325e-05]\n  [5.7787325e-05]\n  ...\n  [5.7787325e-05]\n  [5.7787325e-05]\n  [5.7787325e-05]]\n\n ...\n\n [[7.4462747e-05]\n  [7.4462747e-05]\n  [7.4462747e-05]\n  ...\n  [7.4462747e-05]\n  [7.4462747e-05]\n  [7.4462747e-05]]\n\n [[7.4505238e-05]\n  [7.4505238e-05]\n  [7.4505238e-05]\n  ...\n  [7.4505238e-05]\n  [7.4505238e-05]\n  [7.4505238e-05]]\n\n [[7.4547730e-05]\n  [7.4547730e-05]\n  [7.4547730e-05]\n  ...\n  [7.4547730e-05]\n  [7.4547730e-05]\n  [7.4547730e-05]]]', 'Nc_uv': 10} None
+2023-02-15 23:15:31,325 INFO    MainThread:2901863 [wandb_config.py:__setitem__():155] config set optimizer_name = adam - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14522c12ab20>>
+2023-02-15 23:15:31,325 INFO    MainThread:2901863 [wandb_run.py:_config_callback():1163] config_cb optimizer_name adam None
+2023-02-15 23:15:31,325 INFO    MainThread:2901863 [wandb_config.py:__setitem__():155] config set optimizer_lr = 0.0001 - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14522c12ab20>>
+2023-02-15 23:15:31,325 INFO    MainThread:2901863 [wandb_run.py:_config_callback():1163] config_cb optimizer_lr 0.0001 None
+2023-02-15 23:15:31,325 INFO    MainThread:2901863 [wandb_config.py:__setitem__():155] config set batch_size = 10 - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14522c12ab20>>
+2023-02-15 23:15:31,325 INFO    MainThread:2901863 [wandb_run.py:_config_callback():1163] config_cb batch_size 10 None
+2023-02-15 23:15:31,326 INFO    MainThread:2901863 [wandb_config.py:__setitem__():155] config set n_seq = 5 - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14522c12ab20>>
+2023-02-15 23:15:31,326 INFO    MainThread:2901863 [wandb_run.py:_config_callback():1163] config_cb n_seq 5 None
+2023-02-15 23:15:31,326 INFO    MainThread:2901863 [wandb_config.py:__setitem__():155] config set noise_level = 0.0 - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14522c12ab20>>
+2023-02-15 23:15:31,326 INFO    MainThread:2901863 [wandb_run.py:_config_callback():1163] config_cb noise_level 0.0 None
+2023-02-15 23:15:31,326 INFO    MainThread:2901863 [wandb_config.py:__setitem__():155] config set mc_u = 1 - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14522c12ab20>>
+2023-02-15 23:15:31,326 INFO    MainThread:2901863 [wandb_run.py:_config_callback():1163] config_cb mc_u 1 None
+2023-02-15 23:15:31,326 INFO    MainThread:2901863 [wandb_config.py:__setitem__():155] config set dt = 900 - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14522c12ab20>>
+2023-02-15 23:15:31,326 INFO    MainThread:2901863 [wandb_run.py:_config_callback():1163] config_cb dt 900 None
+2023-02-15 23:17:06,725 WARNING MsgRouterThr:2901863 [router.py:message_loop():77] message_loop has been closed

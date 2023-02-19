@@ -1,0 +1,119 @@
+[34m[1mwandb[39m[22m: [33mWARNING[39m Serializing object of type ndarray that is 786576 bytes
+  0%|                                                                                                                                                                 | 0/2000 [00:00<?, ?it/s]
+training new model, the num of training epochs is 2000
+The num of num_steps_per_level 29
+The num of num_steps_per_epoch 290
+the shape of batch_data: (14, 384, 512, 6)
+the shape of batch_data after transformation (10, 5, 384, 512, 6)
+The shape of input: (10, 384, 512, 6)
+The shape of u_ml_next: (10, 384, 512, 6)
+The shape of input: (10, 384, 512, 6)
+The shape of u_ml_next: (10, 384, 512, 6)
+The shape of test data: (10, 13, 384, 512, 6)
+The shape of input: (10, 384, 512, 6)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  5%|███████▎                                                                                                                                           | 99/2000 [1:49:28<35:02:15, 66.35s/it]
+Traceback (most recent call last):
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_2d0.1.py", line 374, in <module>
+    trainer.train_model(Train_data, Test_data, num_epochs=num_epochs)
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_2d0.1.py", line 332, in train_model
+    print("n_seq {:d}, batch {:d}, mc_u {:.2e}, time {:.2e}s, loss {:.2e}, ml_loss {:.2e}, mc_loss {:.2e}, TE {:.2e}, TE_min {:.2e}, EPmin {:d}, EP {}".format(
+TypeError: unsupported format string passed to list.__format__

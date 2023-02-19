@@ -1,0 +1,1 @@
+{"Total loss": 0.03681643679738045, "Test Error": null, "TEST MIN": 10000000000.0, "U Err": 0.0008678599842824042, "V Err": null, "D Err": null, "P Err": null, "_timestamp": 1676803804.462654, "_runtime": 317.78150701522827, "_step": 19, "_wandb": {"runtime": 317}}

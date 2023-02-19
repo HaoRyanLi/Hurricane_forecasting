@@ -1,0 +1,90 @@
+training new model, the num of training epochs is 2000
+The num of num_steps_per_level 29
+The num of num_steps_per_epoch 290
+the shape of batch_data: (14, 384, 512, 6)
+the shape of batch_data after transformation (10, 5, 384, 512, 6)
+The shape of input: (10, 384, 512, 6)
+  0%|                                                                                                                                          | 0/2000 [00:00<?, ?it/s]
+The shape of u_ml_next: (10, 384, 512, 6)
+The shape of test data: (10, 13, 384, 512, 6)
+The shape of input: (10, 384, 512, 6)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  3%|████▎                                                                                                                       | 69/2000 [1:16:47<35:49:00, 66.77s/it]
+Traceback (most recent call last):
+  File "/work/09012/haoli1/ls6/hurricane/code/hurr_u_net_2d0.2.py", line 112, in <module>
+    trainer.train_model(Train_data, Test_data, num_epochs=num_epochs)
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod_2d.py", line 244, in train_model
+    loss, loss_ml, loss_mc = self.train_epoch(train_data)
+  File "/work/09012/haoli1/ls6/hurricane/code/Train_mod_2d.py", line 226, in train_epoch
+    self.state, loss, loss_ml, loss_mc, self.main_rng = self.train_step(self.state, batch, self.main_rng)
+  File "/work/09012/haoli1/ls6/JAX/lib/python3.9/site-packages/flax/core/frozen_dict.py", line 159, in tree_unflatten
+    @classmethod
+KeyboardInterrupt

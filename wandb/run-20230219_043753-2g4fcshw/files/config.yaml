@@ -1,0 +1,78 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.13.6
+    framework: keras
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.9.7
+    start_time: 1676803073.905915
+    t:
+      1:
+      - 2
+      - 3
+      - 12
+      - 45
+      - 55
+      2:
+      - 2
+      - 3
+      - 12
+      - 45
+      - 55
+      3:
+      - 13
+      - 19
+      - 23
+      4: 3.9.7
+      5: 0.13.6
+      8:
+      - 5
+batch_size:
+  desc: null
+  value: 5
+dt:
+  desc: null
+  value: 1.0
+mc_u:
+  desc: null
+  value: 1
+model_hparams:
+  desc: null
+  value:
+    Nc_uv: 10
+    act_fn: jax._src.nn.functions.relu
+    act_fn_name: relu
+    block_size:
+    - 16
+    - 32
+    - 64
+    - 128
+    - 128
+    - 128
+    - 128
+    f_cori: "[[[0.]\n  [0.]\n  [0.]\n  ...\n  [0.]\n  [0.]\n  [0.]]\n\n [[0.]\n  [0.]\n\
+      \  [0.]\n  ...\n  [0.]\n  [0.]\n  [0.]]\n\n [[0.]\n  [0.]\n  [0.]\n  ...\n \
+      \ [0.]\n  [0.]\n  [0.]]\n\n ...\n\n [[0.]\n  [0.]\n  [0.]\n  ...\n  [0.]\n \
+      \ [0.]\n  [0.]]\n\n [[0.]\n  [0.]\n  [0.]\n  ...\n  [0.]\n  [0.]\n  [0.]]\n\n\
+      \ [[0.]\n  [0.]\n  [0.]\n  ...\n  [0.]\n  [0.]\n  [0.]]]"
+    model_type: U_net_modified
+    out_features: 40
+    padding: REPLICATE
+model_name:
+  desc: null
+  value: UNet
+n_seq:
+  desc: null
+  value: 5
+noise_level:
+  desc: null
+  value: '0.0'
+optimizer_lr:
+  desc: null
+  value: 0.0001
+optimizer_name:
+  desc: null
+  value: adam
