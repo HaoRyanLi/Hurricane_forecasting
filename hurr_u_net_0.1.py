@@ -28,16 +28,16 @@ use_fori = False
 dim_setting = '3d'
 dt_scaling = 15*60
 dt = 15*60/dt_scaling
-norm_paras = {'U':(-5, 5), 'V':(-5, 5), 'D':(0.9, 1.2), 'P':(80000, 105000), 'x':(-98.15747, -87.685425), 'y':(23.304024, 30.74073)}
+norm_paras = {'U':(-10, 10), 'V':(-10, 10), 'D':(0.9, 1.2), 'P':(80000, 105000), 'x':(-98.15747, -87.685425), 'y':(23.304024, 30.74073)}
 
-batch_size_test = 5
+batch_size_test =5
 
 Nx_int = 512
 Ny_int = 384
 Nz_int = 10
 
-# ? Step 0.3 - Spectral method for 2D Navier-Stoke equation initialize parameters
-# initialize physic parameters
+scal_factor = 500
+
 rad = np.pi/180
 Omega = 7.2921e-5
 DATASET_PATH = '/work/09012/haoli1/ls6/hurricane/hurricane_data/high_reso/'
@@ -100,7 +100,7 @@ trainer = TrainerModule(project="hurricane-U-net", model_name="UNet", model_clas
                         exmp_inputs=jax.device_put(Train_data[:1]),
                         train_hparams={'batch_size':5, 'n_seq':5, 'mc_u':1, 'dt':dt, 'noise_level':0.0}, num_train=Train_data.shape[1], 
                         check_pt=CHECKPOINT_PATH, norm_paras=norm_paras, batch_size_test=batch_size_test, use_fori=use_fori, num_level=Num_level,
-                        upload_run=True)
+                        scal_fact=scal_factor, upload_run=True)
 
 
 # print("loading pre-trained model")
@@ -108,7 +108,7 @@ trainer = TrainerModule(project="hurricane-U-net", model_name="UNet", model_clas
 # print("Sucessfully loaded pre-trained modepythol")
 # print(trainer.eval_model(trainer.state, Test_data))
 
-num_epochs=2000
+num_epochs=1000
 print(f"training new model, the num of training epochs is {num_epochs}")
 trainer.train_model(Train_data, Test_data, num_epochs=num_epochs)
 import os, psutil; print(psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2)

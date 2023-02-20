@@ -133,7 +133,7 @@ def recover_norm_data_wxy(norm_paras, norm_data, Nz=1):
     data = recover_norm_data(norm_paras, key_list, norm_data_list)
     return jnp.concatenate(data, axis=-1)
 
-def plot_fig(Z, title, Zmin, Zmax, x_start, x_end, y_start, y_end, save_imag_path):
+def plot_fig(Z, title, Zmin, Zmax, x_start, x_end, y_start, y_end, save_imag_path, plot_show):
     fig, ax = plt.subplots()
     ax.set_title(title)
     ax.set_xlabel('Longitude')
@@ -141,7 +141,8 @@ def plot_fig(Z, title, Zmin, Zmax, x_start, x_end, y_start, y_end, save_imag_pat
     im = ax.imshow(Z, extent=(x_start,x_end, y_start, y_end), cmap=matplotlib.cm.RdBu, vmin=Zmin, vmax=Zmax)
     cb = fig.colorbar(im, ax=ax)
     fig.savefig(save_imag_path, format='eps')
-    plt.show()
+    if plot_show:
+        plt.show()
 
 def get_max_min(data, Nz):
     keys = ['U', 'V', 'D', 'P']
@@ -157,12 +158,12 @@ def get_max_min(data, Nz):
 def get_real_rel_err(norm_paras, norm_data_nn, norm_data_true, Nz=1):
     data_nn = recover_norm_data_woxy(norm_paras, norm_data_nn, Nz)
     data_true = recover_norm_data_woxy(norm_paras, norm_data_true, Nz)
-    print(f"The shape of data_nn: {data_nn.shape}")
-    print(f"The shape of data_true: {data_true.shape}")
-
+    keys = ['U', 'V', 'D', 'P']
     rel_err_sum = 0
     err_list = []
     for i in range(4):
+        key = keys[i]
+        print(f"The shape of data {key} is {data_true[...,i*Nz:(i+1)*Nz].shape}")
         rel_err = jnp.mean((data_nn[...,i*Nz:(i+1)*Nz]-data_true[...,i*Nz:(i+1)*Nz])**2)/jnp.mean(data_true[...,i*Nz:(i+1)*Nz]**2)
         rel_err_sum +=  rel_err
         err_list.append(rel_err)

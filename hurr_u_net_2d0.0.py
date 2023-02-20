@@ -34,14 +34,14 @@ batch_size_test =5
 Nx_int = 512
 Ny_int = 384
 Nz_int = 10
-scal_factor = 100
+scal_factor = 500
 
 
 rad = np.pi/180
 Omega = 7.2921e-5
 DATASET_PATH = '/work/09012/haoli1/ls6/hurricane/hurricane_data/high_reso/'
 x = datetime.datetime.now()
-CHECKPOINT_PATH = '/work/09012/haoli1/ls6/hurricane/saved_models/3d_model/'+str(x)[:10]+'/'
+CHECKPOINT_PATH = '/work/09012/haoli1/ls6/hurricane/saved_models/2d_model/'+str(x)[:10]+'/'
 
 if dim_setting == '3d':
     Num_level = 1
@@ -50,10 +50,6 @@ elif dim_setting == '2d':
     Num_level = Nz_int
     Nc_dim = 1
 
-
-scal_vec = np.concatenate([scal_factor*np.ones(Nc_dim), scal_factor*np.ones(Nc_dim), np.ones(Nc_dim), np.ones(Nc_dim)])
-scal_vec = scal_vec/np.sqrt(np.sum(scal_vec**2))
-print(f"The norm of scal_vec is {np.dot(scal_vec, scal_vec)}")
 
 train_file_name = DATASET_PATH+'Nt_313_10x512x384_uvdp_int_2023-02-09.h5'
 
@@ -104,7 +100,7 @@ trainer = TrainerModule(project="hurricane-U-net-2d", model_name="UNet", model_c
                         optimizer_name="adam", lr_scheduler_name="cosine", optimizer_hparams={"lr": 1e-4,"weight_decay": 1e-4},
                         exmp_inputs=jax.device_put(Train_data[0,:1]),
                         train_hparams={'batch_size':10, 'n_seq':5, 'mc_u':1, 'dt':dt, 'noise_level':0.0}, num_train=Train_data.shape[1], 
-                        check_pt=CHECKPOINT_PATH, norm_paras=norm_paras, use_fori=use_fori, num_level=Nz_int, scal_fact=scal_vec,
+                        check_pt=CHECKPOINT_PATH, norm_paras=norm_paras, use_fori=use_fori, num_level=Nz_int, scal_fact=scal_factor,
                         upload_run=True)
 
 # print("loading pre-trained model")
@@ -112,7 +108,7 @@ trainer = TrainerModule(project="hurricane-U-net-2d", model_name="UNet", model_c
 # print("Sucessfully loaded pre-trained modepythol")
 # print(trainer.eval_model(trainer.state, Test_data))
 
-num_epochs=3
+num_epochs=500
 print(f"training new model, the num of training epochs is {num_epochs}")
 trainer.train_model(Train_data, Test_data, num_epochs=num_epochs)
 import os, psutil; print(psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2)

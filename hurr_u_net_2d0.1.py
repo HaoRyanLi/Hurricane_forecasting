@@ -27,21 +27,21 @@ use_fori = False
 dim_setting = '2d'
 dt_scaling = 15*60
 dt = 15*60/dt_scaling
-norm_paras = {'U':(-5, 5), 'V':(-5, 5), 'D':(0.9, 1.2), 'P':(80000, 105000), 'x':(-98.15747, -87.685425), 'y':(23.304024, 30.74073)}
+norm_paras = {'U':(-10, 10), 'V':(-10, 10), 'D':(0.9, 1.2), 'P':(80000, 105000), 'x':(-98.15747, -87.685425), 'y':(23.304024, 30.74073)}
 
 batch_size_test =5
 
 Nx_int = 512
 Ny_int = 384
 Nz_int = 10
+scal_factor = 1000
 
-# ? Step 0.3 - Spectral method for 2D Navier-Stoke equation initialize parameters
-# initialize physic parameters
+
 rad = np.pi/180
 Omega = 7.2921e-5
 DATASET_PATH = '/work/09012/haoli1/ls6/hurricane/hurricane_data/high_reso/'
 x = datetime.datetime.now()
-CHECKPOINT_PATH = '/work/09012/haoli1/ls6/hurricane/saved_models/3d_model/'+str(x)[:10]+'/'
+CHECKPOINT_PATH = '/work/09012/haoli1/ls6/hurricane/saved_models/2d_model/'+str(x)[:10]+'/'
 
 if dim_setting == '3d':
     Num_level = 1
@@ -57,7 +57,7 @@ print('Loading train data ...')
     
 hf_data = h5py.File(train_file_name, 'r')
 all_data, xx_norm, yy_norm = utilities.norm_data(hf_data, norm_paras, Nz_int, dim_set=dim_setting)
-all_data = jax.device_put(all_data)
+# all_data = jax.device_put(all_data)
 yy = utilities.recover_norm_data(norm_paras, ['y'], [yy_norm])[0]
 
 if use_fori:
@@ -84,6 +84,7 @@ print("Train data shape: ", Train_data.shape)
 
 print('=' * 20 + ' >>')
 print('Loading test data ...')
+
 Test_data = all_data[:Nz_int,num_train:]
 del all_data
 
@@ -98,7 +99,7 @@ trainer = TrainerModule(project="hurricane-U-net-2d", model_name="UNet", model_c
                         optimizer_name="adam", lr_scheduler_name="cosine", optimizer_hparams={"lr": 1e-4,"weight_decay": 1e-4},
                         exmp_inputs=jax.device_put(Train_data[0,:1]),
                         train_hparams={'batch_size':10, 'n_seq':5, 'mc_u':1, 'dt':dt, 'noise_level':0.0}, num_train=Train_data.shape[1], 
-                        check_pt=CHECKPOINT_PATH, norm_paras=norm_paras, use_fori=use_fori, num_level=Nz_int,
+                        check_pt=CHECKPOINT_PATH, norm_paras=norm_paras, use_fori=use_fori, num_level=Nz_int, scal_fact=scal_factor,
                         upload_run=True)
 
 # print("loading pre-trained model")

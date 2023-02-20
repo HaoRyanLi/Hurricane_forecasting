@@ -29,7 +29,7 @@ class TrainState(train_state.TrainState):
 class TrainerModule:
     def __init__(self, project: str, model_name: str, model_class: nn.Module, model_hparams: dict,
                  optimizer_name: str, lr_scheduler_name: str, optimizer_hparams: dict, exmp_inputs: np.array,
-                 train_hparams: dict, num_train: int, check_pt: str, norm_paras: dict, scal_fact: np.array,
+                 train_hparams: dict, num_train: int, check_pt: str, norm_paras: dict, scal_fact: int,
                  batch_size_test=5,
                  use_fori=False, num_level=1, with_train_data=True, upload_run=False, seed=42):
         """
@@ -76,7 +76,7 @@ class TrainerModule:
 
     def upload_wandb(self):
         # Uploading to wandb
-        self.run_name = ('2D_F_'+str(self.use_fori)+'_dt_'+str("%1.0e"%self.train_hparams['dt'])+'_D'+str(self.num_train)+'_MCa_'+str("%1.0e"%self.train_hparams['mc_u'])+'_Noise_' 
+        self.run_name = ('2D_F_'+str(self.use_fori)+'_dt_'+str("%1.0e"%self.train_hparams['dt'])+'_D'+str(self.num_train)+'_Scal'+str(self.scal_fact)+'_Noise_' 
         + str(self.train_hparams['noise_level'])+'_'+self.model_hparams['act_fn_name']+'_N_seq_'+str(self.train_hparams['n_seq'])+'_bs_'
         + str(self.train_hparams['batch_size'])+self.optimizer_name+'_'+self.lr_scheduler_name+str("%1.0e"%self.optimizer_hparams['lr']))
         if self.upload_run:
@@ -124,7 +124,7 @@ class TrainerModule:
                 # print(f"the w_mc shape {w_mc.shape}")
                 # loss_mc += jnp.sum(jnp.mean((w_mc-u_ml_next[...,0])**2, axis=(1,2)))*self.train_hparams['scaling']/self.train_hparams['batch_size']
             # The machine learning term loss
-            loss_ml += jnp.dot(self.scal_fact ,jnp.mean((u_ml_out[:,1:-1,1:-1]-batch_data[:,i,1:-1,1:-1,:-2])**2, axis=(0,1,2)))
+            loss_ml += jnp.dot(self.scal_vec ,jnp.mean((u_ml_out[:,1:-1,1:-1]-batch_data[:,i,1:-1,1:-1,:-2])**2, axis=(0,1,2)))
             u_ml_next = batch_data[:,i].at[:,1:-1,1:-1,:-2].set(u_ml_out[:,1:-1,1:-1])
             print(f"The shape of u_ml_next: {u_ml_next.shape}")
             return loss_ml, loss_mc, u_ml_next, batch_data, params, batch_stats
@@ -231,6 +231,10 @@ class TrainerModule:
         return metric_emph['loss'], metric_emph['loss_ml'], metric_emph['loss_mc']
 
     def train_model(self, train_data, test_data, num_epochs):
+        Nc_dim = self.model_hparams['Nc_uv']
+        self.scal_vec = np.concatenate([self.scal_fact*np.ones(Nc_dim), self.scal_fact*np.ones(Nc_dim), np.ones(Nc_dim), np.ones(Nc_dim)])
+        self.scal_vec = self.scal_vec/np.sqrt(np.sum(self.scal_vec**2))
+
         self.num_steps_per_level = (train_data.shape[1]-self.train_hparams['n_seq']+1)//self.train_hparams['batch_size']	
         print(f"The num of num_steps_per_level {self.num_steps_per_level}")	
         self.num_steps_per_epoch = self.num_level*self.num_steps_per_level	
@@ -240,6 +244,7 @@ class TrainerModule:
         err_test_min = 1e10
         epoch_min = -1
         for epoch_idx in tqdm(range(1, num_epochs+1)):
+            self.train_hparams['noise_level'] = self.train_hparams['noise_level']*0.99
             loss, loss_ml, loss_mc = self.train_epoch(train_data)
             rel_err_u, rel_err_v, rel_rr_d, rel_err_p, err_test = self.eval_model(self.state, test_data)
             # print(rel_err_u, rel_err_v, rel_rr_d, rel_err_p, err_test)
